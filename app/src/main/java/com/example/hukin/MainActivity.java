@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), PlayerSettings.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         intent.putExtra("EXIT", true);
                         startActivity(intent);
+                        finish();
                     }
                 })
                 .setNegativeButton("No", null);
