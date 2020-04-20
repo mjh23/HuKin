@@ -1,49 +1,37 @@
 package com.example.hukin;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import androidx.appcompat.app.AppCompatActivity;
 
-    private Button playbtn;
+public class PlayerSettings extends AppCompatActivity {
+
+    private Button returnbtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.player_settings);
 
-        //If user had backpressed on any activity, exits app
-        if(getIntent().getBooleanExtra("EXIT",false)){
-            if(Build.VERSION.SDK_INT >= 16)
-                finishAffinity();
-            else
-                ActivityCompat.finishAffinity(this);
-        }
-
-        //Player clicks on "Start New Game" Button
-        playbtn = (Button) findViewById(R.id.playgamebtn);
-        playbtn.setOnClickListener(new View.OnClickListener() {
+        //Player clicks on "Return" Button
+        returnbtn = (Button) findViewById(R.id.returnbtn);
+        returnbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), PlayerSettings.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             }
         });
     }
 
-    /*
-    When user taps on phone's backpress button, prompts user with confirmation to leave app
-     */
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
