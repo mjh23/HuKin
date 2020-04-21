@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class PlayerSettings extends AppCompatActivity {
 
     private Button returnbtn;
+    private Button playbtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,17 @@ public class PlayerSettings extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        //Player clicks on "Play" Button
+        playbtn = (Button) findViewById(R.id.playgamebtn);
+        playbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), GameArenaHolder.class);
                 startActivity(intent);
                 finish();
             }

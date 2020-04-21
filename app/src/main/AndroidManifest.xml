@@ -20,6 +20,9 @@
         <activity android:name=".PlayerSettings"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".GameArenaHolder"
+            android:screenOrientation="portrait">
+        </activity>
 
         <meta-data
             android:name="preloaded_fonts"
