@@ -39,6 +39,12 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
     /*
     public constructor for GameArena.
      */
+
+    //These variables describe the location of the boundaries of the arena space where the player moves
+    private int leftBound;
+    private int rightBound;
+    private int topBound;
+    private int bottomBound;
     public GameArena(Context context) {
         //Set up game loop
         super(context);
@@ -67,6 +73,26 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
         //
         //
 
+    }
+
+    // Gets the left bound of the arean space.
+    public int getLeftBound() {
+        return leftBound;
+    }
+
+    // Gets the right bound of the arena space.
+    public int getRightBound() {
+        return rightBound;
+    }
+
+    // Gets the top bound of the arena space.
+    public int getTopBound() {
+        return topBound;
+    }
+
+    // Gets the bottom bound of the arena space.
+    public int getBottomBound() {
+        return bottomBound;
     }
 
     public void reset(){ //Driver class info here and in GamePanel initialize
@@ -153,6 +179,13 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawRect(screenWidth/2 - 200,screenHeight/2 + 600,screenWidth/2 + 200,screenHeight/2 + 700, rectPaint);
         paint.setTextSize(80);
         drawCenterTextMod(canvas,paint,"Main menu",0,650);
+
+        //Drawing an arena space for the avatar and enemies to move around in.
+        canvas.drawRect(50, 200, screenWidth - 50, screenHeight - 400, rectPaint);
+        leftBound = 50;
+        rightBound = screenWidth - 50;
+        topBound = 200;
+        bottomBound = screenHeight - 400;
     }
 
     /*
