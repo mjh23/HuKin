@@ -8,6 +8,7 @@ public class Constants {
     //Index 2 - Wizard
     //Index 3 - Bard
 
+    private static String[] role = {"Warrior", "Ranger", "Wizard", "Bard"};
     private static double[] speed = {5, 10, 7, 9};
     private static double[] damage = {10, 5, 15, 30};
     private static double[] hitpoints = {250, 150, 125, 150};
@@ -32,5 +33,13 @@ public class Constants {
 
     public static double getDex(int index) {
         return dex[index];
+    }
+
+    public static String getRole(int index) {
+        return role[index];
+    }
+
+    public static int getNumRoles() {
+        return role.length;
     }
 }

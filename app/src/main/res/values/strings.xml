@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">Hukin</string>
+    <string name="char_name_default">Jack Ashwald</string>
+    <string name="settings_hitpoints">  Hitpoints: <b><font color = '#00FF00'>250</font></b> </string>
+    <string name="settings_speed">  Speed: <b><font color = '#00FF00'>5</font></b> </string>
+    <string name="settings_damage">  Damage: <b><font color = '#00FF00'>10</font></b> </string>
+    <string name="settings_range">  Range: <b><font color = '#00FF00'>3</font></b> </string>
+    <string name="settings_dex">  Dexterity: <b><font color = '#00FF00'>5</font></b> </string>
+    <string name="warrior_descrip">
+        The Warrior class is the buff and big ... </string>
+    <string name="ranger_descrip">
+        The Ranger class is the quick and no scoper ... </string>
+    <string name="wizard_descrip">
+        The Wizard class is the wise and social distancer... </string>
+    <string name="bard_descrip">
+        The Bard class is the dad joke maker ... </string>
+
+
 </resources>

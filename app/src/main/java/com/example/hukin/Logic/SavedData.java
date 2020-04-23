@@ -6,4 +6,6 @@ public class SavedData {
     //true means there are valid values stored in the class
     //false means all values in class are empty (typically when app restarts)
     public static boolean isOldGame = false;
+
+
 }

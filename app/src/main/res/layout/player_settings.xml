@@ -32,10 +32,39 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/background" />
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/charName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="75dp"
+        android:layout_marginTop="24dp"
+        android:alpha="80"
+        android:ems="10"
+        android:fontFamily="@font/aldrich"
+        android:gravity="center"
+        android:inputType="textPersonName"
+        android:text="@string/char_name_default"
+        android:textColor="#A9000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title" />
+
+    <TextView
+        android:id="@+id/roleSelect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/aldrich"
+        android:text="The Warrior"
+        android:textColor="@android:color/black"
+        android:textSize="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/charName" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -43,9 +72,9 @@
 
         <Button
             android:id="@+id/returnbtn"
-            android:layout_margin = "20dp"
             android:layout_width="123dp"
             android:layout_height="51dp"
+            android:layout_margin="20dp"
             android:background="@drawable/button_backgrounds"
             android:fontFamily="@font/aldrich"
             android:text="Return"
@@ -57,9 +86,9 @@
 
         <Button
             android:id="@+id/playgamebtn"
-            android:layout_margin = "20dp"
             android:layout_width="123dp"
             android:layout_height="51dp"
+            android:layout_margin="20dp"
             android:background="@drawable/button_backgrounds"
             android:fontFamily="@font/aldrich"
             android:text="Play"
@@ -69,6 +98,137 @@
             android:typeface="monospace"
             app:srcCompat="@color/colorPrimaryDark"
             tools:visibility="visible" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/roleSelect">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/classDescrip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/aldrich"
+                android:gravity="center_horizontal"
+                android:text="@string/warrior_descrip"
+                android:textColor="@android:color/background_dark" />
+
+            <TextView
+                android:id="@+id/healthTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/playersetting_status_background"
+                android:fontFamily="@font/aldrich"
+                android:gravity="center"
+                android:text="@string/settings_hitpoints"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/speedTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/playersetting_status_background"
+                android:fontFamily="@font/aldrich"
+                android:gravity="center"
+                android:text="@string/settings_speed"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/dexterityTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/playersetting_status_background"
+                android:fontFamily="@font/aldrich"
+                android:gravity="center"
+                android:text="@string/settings_dex"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/damageTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/playersetting_status_background"
+                android:fontFamily="@font/aldrich"
+                android:gravity="center"
+                android:text="@string/settings_damage"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/rangeTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/playersetting_status_background"
+                android:fontFamily="@font/aldrich"
+                android:gravity="center"
+                android:text="@string/settings_range"
+                android:textColor="@android:color/black" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="20dp"
+            app:srcCompat="@android:color/background_light" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="210dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+        <Button
+            android:id="@+id/prevBtn"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="30dp"
+            android:layout_weight="1"
+            android:background="@drawable/arrow_background"
+            android:text="Previous" />
+
+        <Button
+            android:id="@+id/nextBtn"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/arrow_background"
+            android:text="Next" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

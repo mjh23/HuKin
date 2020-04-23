@@ -3,4 +3,7 @@
     <color name="colorPrimary">#ECCCA2</color>
     <color name="colorPrimaryDark">#CE9A5F</color>
     <color name="colorAccent">#8A745A</color>
+    <color name="gold">#DAA520</color>
+    <color name="black">#000000</color>
+    <color name="lime">#00FF00</color>
 </resources>
