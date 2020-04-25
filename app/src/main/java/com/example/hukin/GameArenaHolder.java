@@ -39,21 +39,19 @@ public class GameArenaHolder extends Activity {
         SavedData data = new SavedData();
         Intent received = getIntent();
         Bundle extras = received.getExtras();
-        Boolean wantNewGame = false;
+        Boolean startNew = true;
         if (extras != null) {
-            //wantNewGame only true when player presses "Continue Game" button in Main Activity (to be implemented!)
-            wantNewGame = extras.getBoolean("newGame", false);
+            //startNew only false when player presses "Continue Game" button in Main Activity
+            startNew = extras.getBoolean("startNew", true);
         }
         //If there is a saved file and the player doesn't want a new game, we call the load game constructor of GameArena
         //Otherwise, it will always create an entirely new game and overwrite current saved data
         //(typically when the player reaches 'Game over' and has to create a new game even though there is a saved file.
-        if (data.isOldGame && !wantNewGame) {
-            gameView = new GameArena(this, data);
-            setContentView(gameView);
-        } else {
-            gameView = new GameArena(this);
-            setContentView(gameView);
+        if (data.isOldGame && startNew) {
+            SavedData.resetToDefaults();
         }
+        gameView = new GameArena(this);
+        setContentView(gameView);
     }
 
     /*

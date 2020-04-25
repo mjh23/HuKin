@@ -9,4 +9,12 @@ public class SavedData {
 
     //Stores the role
     public static int role = 0;
+
+    //Stores elapsed time
+    public static long elapsedTime = 0;
+
+    //Clears the previous saved data
+    public static void resetToDefaults() {
+        isOldGame = false;
+    }
 }

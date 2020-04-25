@@ -33,21 +33,56 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/background" />
 
-    <Button
-        android:id="@+id/playgamebtn"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="64dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/playgamebtn"
+            android:layout_width="213dp"
+            android:layout_height="59dp"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/button_backgrounds"
+            android:fontFamily="@font/aldrich"
+            android:text="Start New Game"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:typeface="monospace"
+            app:srcCompat="@color/colorPrimaryDark" />
+
+        <Button
+        android:id="@+id/continuegamebtn"
         android:layout_width="213dp"
         android:layout_height="59dp"
-        android:layout_marginBottom="150dp"
         android:background="@drawable/button_backgrounds"
         android:fontFamily="@font/aldrich"
-        android:text="Start New Game"
+        android:text="Continue Game"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@android:color/black"
         android:textStyle="bold"
         android:typeface="monospace"
-        app:layout_constraintBottom_toBottomOf="@+id/background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@color/colorPrimaryDark" />
+        app:srcCompat="@color/colorPrimaryDark"
+        android:visibility="gone"/>
+
+        <Button
+        android:id="@+id/settingsbtn"
+        android:layout_width="213dp"
+        android:layout_height="59dp"
+        android:background="@drawable/button_backgrounds"
+        android:fontFamily="@font/aldrich"
+        android:text="Settings"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
+        android:typeface="monospace"
+        app:srcCompat="@color/colorPrimaryDark"/>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

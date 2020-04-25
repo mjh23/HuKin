@@ -13,9 +13,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.hukin.Logic.GameArena;
+import com.example.hukin.Logic.SavedData;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button playbtn;
+    private Button continuebtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,20 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        if (SavedData.isOldGame) {
+            continuebtn = (Button) findViewById(R.id.continuegamebtn);
+            continuebtn.setVisibility(View.VISIBLE);
+            continuebtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(), GameArenaHolder.class);
+                    intent.putExtra("startNew", false);
+                    startActivity(intent);
+                    finish();
+                }
+            });
+        }
     }
 
     /*
