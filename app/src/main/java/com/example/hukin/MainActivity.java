@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -21,6 +22,9 @@ public class MainActivity extends AppCompatActivity {
     private Button continuebtn;
     private Button settingsbtn;
 
+    //Holds click MediaPlayer object
+    MediaPlayer click;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,11 +38,17 @@ public class MainActivity extends AppCompatActivity {
                 ActivityCompat.finishAffinity(this);
         }
 
+        //Prepares click sound if sound effects are turned on
+        click = MediaPlayer.create(MainActivity.this, R.raw.click);
+
         //Player clicks on "Start New Game" Button
         playbtn = (Button) findViewById(R.id.playgamebtn);
         playbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SavedData.soundEffOn) {
+                    clickSound();
+                }
                 Intent intent = new Intent(getApplicationContext(), PlayerSettings.class);
                 startActivity(intent);
                 finish();
@@ -51,6 +61,9 @@ public class MainActivity extends AppCompatActivity {
             continuebtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if (SavedData.soundEffOn) {
+                        clickSound();
+                    }
                     Intent intent = new Intent(getApplicationContext(), GameArenaHolder.class);
                     intent.putExtra("startNew", false);
                     startActivity(intent);
@@ -63,6 +76,9 @@ public class MainActivity extends AppCompatActivity {
         settingsbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (SavedData.soundEffOn) {
+                    clickSound();
+                }
                 Intent intent = new Intent(getApplicationContext(), GameSettings.class);
                 startActivity(intent);
                 finish();
@@ -70,6 +86,22 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        click.release();
+    }
+
+    //Plays click sound effect
+    private void clickSound() {
+        try {
+            click.stop();
+            click.prepare();
+            click.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     /*
     When user taps on phone's backpress button, prompts user with confirmation to leave app
      */

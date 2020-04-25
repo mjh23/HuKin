@@ -8,7 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -16,9 +16,12 @@ import android.view.SurfaceView;
 import android.widget.Toast;
 
 import com.example.hukin.MainActivity;
+import com.example.hukin.PlayerSettings;
 import com.example.hukin.R;
 
 public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
+
+    MediaPlayer click;
 
     //MainThread that the game loop runs through
     private MainThread thread;
@@ -65,6 +68,9 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
             elapsedTime = SavedData.elapsedTime;
         }
 
+        //Prepares click sound if sound effects are turned on
+        click = MediaPlayer.create(gameArenaHolder, R.raw.click);
+
         //Initializing values start here...
         //
         //
@@ -96,9 +102,12 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
                 if (isUpperMenuSelected) {
                     //Check to see if the user is tapping within the menu, otherwise return to the game
                     if (x>=screenWidth/2-400&&x<=screenWidth/2+400&&y>=screenHeight/2-400&&y<=screenHeight/2+400) {
-
-                        //Placement for debugging currently, to be moved within if(gameOver), upper left menu, or removed
+                        //Return to main menu button
                         if(x>=screenWidth/2-200&&x<=screenWidth/2+200&&y>=screenHeight/2-300&&y<=screenHeight/2-200) {
+                            if (SavedData.soundEffOn) {
+                                clickSound();
+                            }
+
                             Intent intent = new Intent(getContext(), MainActivity.class);
                             getContext().startActivity(intent);
                             gameArenaHolder.finish();
@@ -110,6 +119,10 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
 
                 //Checks if upper left menu was pressed
                 if(!isUpperMenuSelected && (x>=50&&x<=200&&y>=50&&y<=170)) {
+                    if (SavedData.soundEffOn) {
+                        clickSound();
+                    }
+
                     Toast.makeText(getContext(), "Upper Left Menu was pressed!", Toast.LENGTH_SHORT).show();
                     isUpperMenuSelected = true;
                 }
@@ -260,6 +273,9 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder){
+        //Release mediaplayer to free memory
+        click.release();
+
         boolean retry = true;
         while(retry){
             try{
@@ -290,6 +306,17 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
     // Gets the bottom bound of the arena space.
     public int getBottomBound() {
         return bottomBound;
+    }
+
+    //Plays click sound effect
+    private void clickSound() {
+        try {
+            click.stop();
+            click.prepare();
+            click.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     //Draws upper left menu

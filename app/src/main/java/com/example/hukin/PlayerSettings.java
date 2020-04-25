@@ -3,6 +3,7 @@ package com.example.hukin;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -18,6 +19,8 @@ import com.example.hukin.Logic.SavedData;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class PlayerSettings extends AppCompatActivity {
+
+    MediaPlayer click;
 
     //Store buttons on this activity
     private Button returnbtn;
@@ -42,11 +45,17 @@ public class PlayerSettings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.player_settings);
 
+        //Prepares click sound if sound effects are turned on
+        click = MediaPlayer.create(PlayerSettings.this, R.raw.click);
+
         //Player clicks on "Return" Button
         returnbtn = (Button) findViewById(R.id.returnbtn1);
         returnbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SavedData.soundEffOn) {
+                    clickSound();
+                }
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
@@ -58,9 +67,11 @@ public class PlayerSettings extends AppCompatActivity {
         playbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SavedData.soundEffOn) {
+                    clickSound();
+                }
                 //Save role selection to savedData
                 SavedData.role = role;
-
                 Intent intent = new Intent(getApplicationContext(), GameArenaHolder.class);
                 startActivity(intent);
                 finish();
@@ -82,6 +93,9 @@ public class PlayerSettings extends AppCompatActivity {
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SavedData.soundEffOn) {
+                    clickSound();
+                }
                 role = (role + 1) % Constants.getNumRoles();
                 updateText(role);
             }
@@ -91,11 +105,20 @@ public class PlayerSettings extends AppCompatActivity {
         prevBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (SavedData.soundEffOn) {
+                    clickSound();
+                }
                 role = (role - 1 + Constants.getNumRoles()) % Constants.getNumRoles();
                 updateText(role);
             }
         });
         //End of Selecting different player role
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        click.release();
     }
 
     /**
@@ -146,6 +169,17 @@ public class PlayerSettings extends AppCompatActivity {
         spannableString = new SpannableString(h);
         spannableString.setSpan(fcsLime,6,h.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         range.setText(spannableString);
+    }
+
+    //Plays click sound effect
+    private void clickSound() {
+        try {
+            click.stop();
+            click.prepare();
+            click.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

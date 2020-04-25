@@ -60,6 +60,7 @@
         android:id="@+id/continuegamebtn"
         android:layout_width="213dp"
         android:layout_height="59dp"
+        android:layout_marginBottom="32dp"
         android:background="@drawable/button_backgrounds"
         android:fontFamily="@font/aldrich"
         android:text="Continue Game"
