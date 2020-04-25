@@ -7,5 +7,6 @@ public class SavedData {
     //false means all values in class are empty (typically when app restarts)
     public static boolean isOldGame = false;
 
-
+    //Stores the role
+    public static int role = 0;
 }

@@ -15,6 +15,7 @@ import android.widget.TextClock;
 import android.widget.TextView;
 
 import com.example.hukin.Logic.Constants;
+import com.example.hukin.Logic.SavedData;
 
 import org.w3c.dom.Text;
 
@@ -62,6 +63,9 @@ public class PlayerSettings extends AppCompatActivity {
         playbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Save role selection to savedData
+                SavedData.role = role;
+
                 Intent intent = new Intent(getApplicationContext(), GameArenaHolder.class);
                 startActivity(intent);
                 finish();

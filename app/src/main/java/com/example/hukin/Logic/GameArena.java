@@ -8,9 +8,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Toast;
 
 import com.example.hukin.MainActivity;
 import com.example.hukin.R;
@@ -45,6 +47,7 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
     private int rightBound;
     private int topBound;
     private int bottomBound;
+
     public GameArena(Context context) {
         //Set up game loop
         super(context);
@@ -75,26 +78,6 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
 
     }
 
-    // Gets the left bound of the arean space.
-    public int getLeftBound() {
-        return leftBound;
-    }
-
-    // Gets the right bound of the arena space.
-    public int getRightBound() {
-        return rightBound;
-    }
-
-    // Gets the top bound of the arena space.
-    public int getTopBound() {
-        return topBound;
-    }
-
-    // Gets the bottom bound of the arena space.
-    public int getBottomBound() {
-        return bottomBound;
-    }
-
     public void reset(){ //Driver class info here and in GamePanel initialize
         /*
         This method to be called when player wants to continue to next round.
@@ -115,13 +98,17 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
                 int x = (int) event.getX();
                 int y = (int) event.getY();
 
-                //Placement for demo currently, to be moved within if(gameOver)
-                if(x>=screenWidth/2-200&&x<=screenWidth/2+200&&y>=screenHeight/2+600&&y<=screenHeight/2+700) {
+                //Placement for demo currently, to be moved within if(gameOver), upper left menu, or removed
+                if(x>=screenWidth/2-200&&x<=screenWidth/2+200&&y>=screenHeight/2+800&&y<=screenHeight/2+900) {
                     Intent intent = new Intent(getContext(), MainActivity.class);
                     getContext().startActivity(intent);
                     gameArenaHolder.finish();
                 }
 
+                //Checks if upper left menu was pressed
+                if(x>=50&&x<=200&&y>=50&&y<=170) {
+                    Toast.makeText(getContext(), "Upper Left Menu was pressed!", Toast.LENGTH_SHORT).show();
+                }
 
                 if (gameOver) {
                     //When user taps after game is over.
@@ -164,29 +151,43 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
         paint.setColor(Color.BLACK);
         paint.setTextSize(80f);
 
+        //Drawing an arena space for the avatar and enemies to move around in.
+        leftBound = 50;
+        rightBound = screenWidth - 50;
+        topBound = 200;
+        bottomBound = screenHeight - 300;
+        drawArena(canvas);
+
         if (gameOver) {
             //When game is over
         }
 
         //Display Elapsed Time
-        drawCenterTextMod(canvas, paint, "ElapsedTime: " + elapsedTime, -125, (-screenHeight / 2 + 95));
+        drawCenterTextMod(canvas, paint, "ElapsedTime: " + elapsedTime, 0, (-screenHeight / 2 + 95));
+
+        //Draws upper left menu
+        drawMenu(canvas);
 
         //Drawing Main Menu Button to return to main menu
         //(Once rounds are set, this should be put inside an if statement
         // that checks when rounds are over/game over
         Paint rectPaint = new Paint();
         rectPaint.setColor(Color.WHITE);
-        canvas.drawRect(screenWidth/2 - 200,screenHeight/2 + 600,screenWidth/2 + 200,screenHeight/2 + 700, rectPaint);
+        canvas.drawRect(screenWidth/2 - 200,screenHeight/2 + 800,screenWidth/2 + 200,screenHeight/2 + 900, rectPaint);
         paint.setTextSize(80);
-        drawCenterTextMod(canvas,paint,"Main menu",0,650);
-
-        //Drawing an arena space for the avatar and enemies to move around in.
-        canvas.drawRect(50, 200, screenWidth - 50, screenHeight - 400, rectPaint);
-        leftBound = 50;
-        rightBound = screenWidth - 50;
-        topBound = 200;
-        bottomBound = screenHeight - 400;
+        drawCenterTextMod(canvas,paint,"Main menu",0,850);
     }
+
+    private void drawArena(Canvas canvas) {
+        Paint arenaColor = new Paint();
+        arenaColor.setColor(Color.WHITE);
+        canvas.drawRect(leftBound, topBound, rightBound, bottomBound, arenaColor);
+        arenaColor.setStrokeWidth(10);
+        arenaColor.setStyle(Paint.Style.STROKE);
+        arenaColor.setColor(Color.BLACK);
+        canvas.drawRect(leftBound, topBound, rightBound, bottomBound, arenaColor);
+    }
+
 
     /*
     Helper method to draw center text.
@@ -234,5 +235,45 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
             }
             retry = false;
         }
+    }
+
+    // Gets the left bound of the arena space.
+    public int getLeftBound() {
+        return leftBound;
+    }
+
+    // Gets the right bound of the arena space.
+    public int getRightBound() {
+        return rightBound;
+    }
+
+    // Gets the top bound of the arena space.
+    public int getTopBound() {
+        return topBound;
+    }
+
+    // Gets the bottom bound of the arena space.
+    public int getBottomBound() {
+        return bottomBound;
+    }
+
+    //Draws upper left menu
+    private void drawMenu(Canvas canvas) {
+        //Draws upper left menu/options button with border
+        Paint buttonColor = new Paint();
+        buttonColor.setColor(getResources().getColor(R.color.colorPrimaryDark));
+        int top = 50;
+        int right = 200;
+        int bottom = 170;
+        canvas.drawRect(leftBound, top, right, bottom, buttonColor);
+        buttonColor.setStyle(Paint.Style.STROKE);
+        buttonColor.setColor(Color.BLACK);
+        buttonColor.setStrokeWidth(10);
+        canvas.drawRect(leftBound, top, right, bottom, buttonColor);
+        //Three lines for visual effect
+        buttonColor.setStyle(Paint.Style.FILL);
+        canvas.drawRect(leftBound + 20, top + 25, right - 20, top + 35, buttonColor);
+        canvas.drawRect(leftBound + 20, top + 55, right - 20, top + 65, buttonColor);
+        canvas.drawRect(leftBound + 20, top + 85, right - 20, top + 95, buttonColor);
     }
 }
