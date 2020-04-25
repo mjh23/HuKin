@@ -13,13 +13,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.hukin.Logic.GameArena;
 import com.example.hukin.Logic.SavedData;
 
 public class MainActivity extends AppCompatActivity {
 
     private Button playbtn;
     private Button continuebtn;
+    private Button settingsbtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +58,16 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+
+        settingsbtn = (Button) findViewById(R.id.settingsbtn);
+        settingsbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), GameSettings.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     /*

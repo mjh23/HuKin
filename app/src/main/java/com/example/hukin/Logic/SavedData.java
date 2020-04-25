@@ -13,6 +13,12 @@ public class SavedData {
     //Stores elapsed time
     public static long elapsedTime = 0;
 
+    //Stores whether user wanted Music on
+    public static boolean musicOn = true;
+
+    //Stores whether user wanted Sound effects on
+    public static boolean soundEffOn = true;
+
     //Clears the previous saved data
     public static void resetToDefaults() {
         isOldGame = false;

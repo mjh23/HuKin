@@ -3,7 +3,6 @@ package com.example.hukin;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -11,16 +10,12 @@ import android.text.style.ForegroundColorSpan;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextClock;
 import android.widget.TextView;
 
 import com.example.hukin.Logic.Constants;
 import com.example.hukin.Logic.SavedData;
 
-import org.w3c.dom.Text;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class PlayerSettings extends AppCompatActivity {
 
@@ -48,7 +43,7 @@ public class PlayerSettings extends AppCompatActivity {
         setContentView(R.layout.player_settings);
 
         //Player clicks on "Return" Button
-        returnbtn = (Button) findViewById(R.id.returnbtn);
+        returnbtn = (Button) findViewById(R.id.returnbtn1);
         returnbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
