@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -16,7 +17,6 @@ import android.view.SurfaceView;
 import android.widget.Toast;
 
 import com.example.hukin.MainActivity;
-import com.example.hukin.PlayerSettings;
 import com.example.hukin.R;
 
 public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
@@ -30,6 +30,9 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
     //Gets the screenWidth and screenHeight of devices, useful for draw method below
     private int screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
     private int screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+
+    //Storing all game sprites shown
+    private CharacterSprites playerSprite;
 
     // r is a variable used in the helper method drawCenterTextMod
     private Rect r = new Rect();
@@ -184,6 +187,9 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
             //When game is over
         }
 
+        //Draw all sprites here
+        playerSprite.draw(canvas, leftBound, topBound);
+
         //Display Elapsed Time
         drawCenterTextMod(canvas, paint, "" + elapsedTime + "\n " + SavedData.characterName, 0, (-screenHeight / 2 + 95));
 
@@ -266,6 +272,8 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        playerSprite = new CharacterSprites(BitmapFactory.decodeResource(getResources(), R.drawable.char_armor));
+
         thread = new MainThread(getHolder(), this);
         thread.setRunning(true);
         thread.start();
