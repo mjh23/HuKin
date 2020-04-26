@@ -59,9 +59,18 @@ public class GameSettings extends AppCompatActivity {
                 if (b) {
                     SavedData.musicOn = true;
                     Toast.makeText(getApplicationContext(), "Music turned On!", Toast.LENGTH_SHORT).show();
+                    try {
+                        MainActivity.music.prepareAsync();
+                        MainActivity.music.start();
+                        MainActivity.isPlaying = true;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else {
                     SavedData.musicOn = false;
                     Toast.makeText(getApplicationContext(), "Music turned Off!", Toast.LENGTH_SHORT).show();
+                    MainActivity.music.stop();
+                    MainActivity.isPlaying = false;
                 }
             }
         });

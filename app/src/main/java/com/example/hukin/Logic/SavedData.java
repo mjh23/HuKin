@@ -1,5 +1,7 @@
 package com.example.hukin.Logic;
 
+import android.media.MediaPlayer;
+
 public class SavedData {
 
     //Stores whether user is continuing/just started a game or not
@@ -23,4 +25,5 @@ public class SavedData {
     public static void resetToDefaults() {
         isOldGame = false;
     }
+
 }

@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
 
     //Holds click MediaPlayer object
     MediaPlayer click;
+    public static MediaPlayer music;
+    public static boolean isPlaying = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,13 @@ public class MainActivity extends AppCompatActivity {
 
         //Prepares click sound if sound effects are turned on
         click = MediaPlayer.create(MainActivity.this, R.raw.click);
+        //Prepares theme music
+        music = MediaPlayer.create(MainActivity.this, R.raw.theme);
+        music.setLooping(true);
+        if (SavedData.musicOn && !isPlaying) {
+            music.start();
+            isPlaying = true;
+        }
 
         //Player clicks on "Start New Game" Button
         playbtn = (Button) findViewById(R.id.playgamebtn);
@@ -84,6 +93,13 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void stopMusic() {
+        if (music != null) {
+            music.release();
+            music = null;
+        }
     }
 
     @Override
