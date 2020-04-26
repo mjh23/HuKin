@@ -43,11 +43,20 @@ public class MainActivity extends AppCompatActivity {
         //Prepares click sound if sound effects are turned on
         click = MediaPlayer.create(MainActivity.this, R.raw.click);
         //Prepares theme music
+        if (music != null) {
+            music.stop();
+            music.release();
+            music = null;
+        }
         music = MediaPlayer.create(MainActivity.this, R.raw.theme);
         music.setLooping(true);
-        if (SavedData.musicOn && !isPlaying) {
-            music.start();
-            isPlaying = true;
+
+        if (SavedData.musicOn) {
+            try {
+                music.start();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         //Player clicks on "Start New Game" Button
@@ -93,13 +102,6 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
-    }
-
-    private void stopMusic() {
-        if (music != null) {
-            music.release();
-            music = null;
-        }
     }
 
     @Override
