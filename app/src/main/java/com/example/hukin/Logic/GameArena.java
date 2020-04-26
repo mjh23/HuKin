@@ -45,7 +45,7 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
 
     //Turns true when the user taps the upper left menu
     private boolean isUpperMenuSelected = false;
-    private PlayerStatus player = new PlayerStatus(128, 128, SavedData.role, playerSprite);
+    private PlayerStatus player;
     private Canvas canvas = new Canvas();
     // Maybe keep track of a roundOver variable?
 
@@ -66,18 +66,20 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
         thread = new MainThread(getHolder(), this);
         setFocusable(true);
         gameArenaHolder = (Activity) context;
-        Log.i("TESTING SURFACEVIEW", "Game Arena Created!");
+
         //If user had saved data, initialize those values
         if (SavedData.isOldGame) {
             elapsedTime = SavedData.elapsedTime;
+        } else {
+            player = new PlayerStatus(128, 128, SavedData.role, playerSprite);
+
+            //Initializing values start here...
+            //
+            //
         }
 
         //Prepares click sound if sound effects are turned on
         click = MediaPlayer.create(gameArenaHolder, R.raw.click);
-
-        //Initializing values start here...
-        //
-        //
     }
 
     public void reset(){ //Driver class info here and in GamePanel initialize
