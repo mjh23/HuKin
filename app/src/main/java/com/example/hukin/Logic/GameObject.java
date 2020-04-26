@@ -12,6 +12,7 @@ public abstract class GameObject {
     protected int x;
     /** y-coordinate of image location. */
     protected int y;
+    private CharacterSprites sprite;
 
     /**
      * Constructs Game Object.
@@ -20,11 +21,13 @@ public abstract class GameObject {
      * @param setX sets the x-coordinate of the objects location
      * @param setY sets the y-coordinate of the objects location
      */
-    public GameObject(final int setWidth, final int setHeight, final int setX, final int setY) {
+    public GameObject(final int setWidth, final int setHeight, final int setX, final int setY,
+                      final CharacterSprites setSprite) {
         width = setWidth;
         height = setHeight;
         x = setX;
         y = setY;
+        sprite = setSprite;
     }
 
     /**
@@ -58,4 +61,6 @@ public abstract class GameObject {
     public int getY() {
         return y;
     }
+    public void setX(int newX) { x = newX; }
+    public void setY(int newY) { y = newY; }
 }

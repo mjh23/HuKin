@@ -14,16 +14,17 @@ public class PlayerStatus extends GameObject {
     // Defines how fast the player shoots.
     private double dex;
 
+
     /**
      * Constructs the player avatar.
-     * @param arena arena space where the action of the game takes place
      * @param setHeight avatar height
      * @param setWidth avatar width
      * @param setRole player's chosen role
      */
-    public PlayerStatus(final GameArena arena, final int setHeight, final int setWidth, final int setRole) {
-        super(setHeight, setWidth, (arena.getRightBound() - arena.getLeftBound())/2,
-                (arena.getBottomBound() - arena.getTopBound())/2);
+    public PlayerStatus(final int setHeight, final int setWidth, final int setRole,
+                        final CharacterSprites setSprite) {
+        super(setHeight, setWidth, (GameArena.rightBound - GameArena.leftBound)/2,
+                (GameArena.bottomBound - GameArena.topBound)/2, setSprite);
         playerRole = setRole;
         speed = Constants.getSpeed(playerRole);
         damage = Constants.getDamage(playerRole);

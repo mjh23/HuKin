@@ -45,7 +45,8 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
 
     //Turns true when the user taps the upper left menu
     private boolean isUpperMenuSelected = false;
-
+    private PlayerStatus player = new PlayerStatus(128, 128, SavedData.role, playerSprite);
+    private Canvas canvas = new Canvas();
     // Maybe keep track of a roundOver variable?
 
     /*
@@ -53,10 +54,10 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
      */
 
     //These variables describe the location of the boundaries of the arena space where the player moves
-    private int leftBound;
-    private int rightBound;
-    private int topBound;
-    private int bottomBound;
+    public static int leftBound;
+    public static int rightBound;
+    public static int topBound;
+    public static int bottomBound;
 
     public GameArena(Context context) {
         //Set up game loop
@@ -129,6 +130,9 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
                     Toast.makeText(getContext(), "Upper Left Menu was pressed!", Toast.LENGTH_SHORT).show();
                     isUpperMenuSelected = true;
                 }
+                if (!isUpperMenuSelected && ((x > leftBound && x < rightBound) && (y < bottomBound && y > topBound))) {
+                    Movement.move(player, x - 64, y - 64, player.getSpeed(), canvas, playerSprite);
+                }
 
                 if (gameOver) {
                     //When user taps after game is over.
@@ -188,7 +192,7 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         //Draw all sprites here
-        playerSprite.draw(canvas, leftBound, topBound);
+        playerSprite.draw(canvas, player.getX() , player.getY() + 64);
 
         //Display Elapsed Time
         drawCenterTextMod(canvas, paint, "" + elapsedTime + "\n " + SavedData.characterName, 0, (-screenHeight / 2 + 95));
@@ -294,26 +298,6 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
             }
             retry = false;
         }
-    }
-
-    // Gets the left bound of the arena space.
-    public int getLeftBound() {
-        return leftBound;
-    }
-
-    // Gets the right bound of the arena space.
-    public int getRightBound() {
-        return rightBound;
-    }
-
-    // Gets the top bound of the arena space.
-    public int getTopBound() {
-        return topBound;
-    }
-
-    // Gets the bottom bound of the arena space.
-    public int getBottomBound() {
-        return bottomBound;
     }
 
     //Plays click sound effect
