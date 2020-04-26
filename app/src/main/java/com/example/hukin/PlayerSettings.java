@@ -15,6 +15,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,6 +53,9 @@ public class PlayerSettings extends AppCompatActivity {
     private TextView damage;
     private TextView range;
 
+    //Stores background image
+    private ImageView background;
+
     //Stores player's typed character name
     private EditText charName;
 
@@ -76,6 +80,10 @@ public class PlayerSettings extends AppCompatActivity {
 
         //Prepares click sound if sound effects are turned on
         click = MediaPlayer.create(PlayerSettings.this, R.raw.click);
+
+        //Prepares background image
+        background = (ImageView) findViewById(R.id.background);
+
 
         //Player clicks on "Return" Button
         returnbtn = (Button) findViewById(R.id.returnbtn1);
