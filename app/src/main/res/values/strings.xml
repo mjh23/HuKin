@@ -16,5 +16,6 @@
         The Bard class is the dad joke maker ... </string>
 
     <string name="sound_credits">Royalty free music from https://www.fesliyanstudios.com</string>
+    <string name="random_name_credits">Random name generator by names.drycodes.com</string>
 
 </resources>
