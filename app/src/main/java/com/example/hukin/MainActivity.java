@@ -40,6 +40,19 @@ public class MainActivity extends AppCompatActivity {
                 ActivityCompat.finishAffinity(this);
         }
 
+        //Hides android app's home and back buttons
+        View decorView = getWindow().getDecorView();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            decorView.setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+            );
+        }
+
         //Prepares click sound if sound effects are turned on
         click = MediaPlayer.create(MainActivity.this, R.raw.click);
         //Prepares theme music
