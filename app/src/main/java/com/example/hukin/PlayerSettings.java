@@ -1,22 +1,42 @@
 package com.example.hukin;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.hukin.Logic.Constants;
 import com.example.hukin.Logic.SavedData;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 public class PlayerSettings extends AppCompatActivity {
 
@@ -27,6 +47,7 @@ public class PlayerSettings extends AppCompatActivity {
     private Button playbtn;
     private Button prevBtn;
     private Button nextBtn;
+    private Button genderBtn;
 
     //Stores the Textview references
     private TextView roleHeader;
@@ -37,8 +58,22 @@ public class PlayerSettings extends AppCompatActivity {
     private TextView damage;
     private TextView range;
 
+    //Stores player's typed character name
+    private EditText charName;
+
     //Store which class selected
     private int role = 0;
+
+    //For API calls of random names, requestqueue
+    private RequestQueue mQueue;
+
+    //Stores the gender of the char name
+    //True = Male
+    //False = Female
+    private boolean charGender;
+
+    //Desired character name. Default: Jack Ashwald
+    private String name = "Jack Ashwald";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +107,48 @@ public class PlayerSettings extends AppCompatActivity {
                 }
                 //Save role selection to savedData
                 SavedData.role = role;
+                //Sets text entered in charName to character name
+                if (!TextUtils.isEmpty(charName.getText())) {
+                    SavedData.characterName = charName.getText().toString();
+                } else {
+                    SavedData.characterName = name;
+                }
                 Intent intent = new Intent(getApplicationContext(), GameArenaHolder.class);
                 startActivity(intent);
                 finish();
+            }
+        });
+
+        //EditText view of the player settings
+        charName = (EditText) findViewById(R.id.charName);
+        charName.setHint(name);
+
+        //Generates a single random name from API call that fits the displayed gender by setting
+        genderBtn = (Button) findViewById(R.id.genderbtn);
+        genderBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (SavedData.soundEffOn) {
+                    clickSound();
+                }
+                System.out.println(name);
+                //Makes API call
+                if (ContextCompat.checkSelfPermission(PlayerSettings.this, Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED) {
+                    mQueue = Volley.newRequestQueue(PlayerSettings.this);
+                    jsonParse();
+                } else {
+                    Toast.makeText(getApplicationContext(), "For custom names, please allow permissions: Internet", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                //If displayed is M, then clicking turns to to F and vise versa
+                if (genderBtn.getText().equals("M")) {
+                    charGender = false;
+                    genderBtn.setText("F");
+                } else {
+                    charGender = true;
+                    genderBtn.setText("M");
+                }
             }
         });
 
@@ -119,6 +193,43 @@ public class PlayerSettings extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         click.release();
+    }
+
+    //Makes an API call for random names
+    public void jsonParse() {
+        String url = "";
+        if (charGender) {
+            if (Math.random() >= 0.3) {
+                url = "http://names.drycodes.com/1?nameOptions=boy_names&separator=space";
+            } else {
+                url = "http://names.drycodes.com/1?nameOptions=funnyWords&separator=space";
+            }
+        } else {
+            url = "http://names.drycodes.com/1?separator=space&nameOptions=girl_names";
+        }
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        name = response.toString()
+                                .replaceAll("[\\[\\](){}]","")
+                                .replaceAll("\"","");
+                        if (name.length() >= 20) {
+                            String[] cut = name.split(" ");
+                            charName.setHint(cut[0]);
+                        } else {
+                            charName.setHint(name);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        System.out.println(name);
+        mQueue.add(request);
     }
 
     /**

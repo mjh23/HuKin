@@ -21,6 +21,9 @@ public class SavedData {
     //Stores whether user wanted Sound effects on
     public static boolean soundEffOn = true;
 
+    //Stores character name
+    public static String characterName = "";
+
     //Clears the previous saved data
     public static void resetToDefaults() {
         isOldGame = false;

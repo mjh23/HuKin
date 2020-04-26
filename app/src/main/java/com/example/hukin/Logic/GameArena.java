@@ -185,7 +185,7 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         //Display Elapsed Time
-        drawCenterTextMod(canvas, paint, "ElapsedTime: " + elapsedTime, 0, (-screenHeight / 2 + 95));
+        drawCenterTextMod(canvas, paint, "" + elapsedTime + "\n " + SavedData.characterName, 0, (-screenHeight / 2 + 95));
 
         //Draws upper left menu
         drawMenu(canvas);

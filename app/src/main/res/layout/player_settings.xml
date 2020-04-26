@@ -32,21 +32,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/background" />
 
-    <EditText
-        android:id="@+id/charName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:ems="10"
-        android:fontFamily="@font/aldrich"
-        android:gravity="center"
-        android:hint="Jack Ashwald"
-        android:inputType="textPersonName"
-        android:textColor="#A9000000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title" />
-
     <TextView
         android:id="@+id/roleSelect"
         android:layout_width="wrap_content"
@@ -57,7 +42,54 @@
         android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/charName" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:baselineAligned="true"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title">
+
+        <EditText
+            android:id="@+id/charName"
+            android:layout_width="218dp"
+            android:layout_height="42dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="10dp"
+            android:ems="10"
+            android:fontFamily="@font/aldrich"
+            android:gravity="center"
+            android:hint="Jack Ashwald"
+            android:inputType="textPersonName"
+            android:lineSpacingExtra="10sp"
+            android:textColor="#A9000000"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/genderbtn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/arrow_background"
+            android:fontFamily="@font/aldrich"
+            android:text="M"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:typeface="monospace"
+            app:srcCompat="@color/colorPrimaryDark" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -105,7 +137,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="20dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
