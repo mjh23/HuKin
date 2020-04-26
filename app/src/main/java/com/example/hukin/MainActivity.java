@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         //If user had backpressed on any activity, exits app
         if(getIntent().getBooleanExtra("EXIT",false)){
+            music.stop();
             if(Build.VERSION.SDK_INT >= 16)
                 finishAffinity();
             else
