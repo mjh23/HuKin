@@ -142,6 +142,7 @@ public class PlayerSettings extends AppCompatActivity {
                 if (SavedData.soundEffOn) {
                     clickSound();
                 }
+
                 System.out.println(name);
                 //Makes API call
                 if (ContextCompat.checkSelfPermission(PlayerSettings.this, Manifest.permission.INTERNET) == PackageManager.PERMISSION_GRANTED) {
@@ -181,6 +182,7 @@ public class PlayerSettings extends AppCompatActivity {
                 if (SavedData.soundEffOn) {
                     clickSound();
                 }
+
                 role = (role + 1) % Constants.getNumRoles();
                 updateText(role);
             }
@@ -193,6 +195,7 @@ public class PlayerSettings extends AppCompatActivity {
                 if (SavedData.soundEffOn) {
                     clickSound();
                 }
+
                 role = (role - 1 + Constants.getNumRoles()) % Constants.getNumRoles();
                 updateText(role);
             }

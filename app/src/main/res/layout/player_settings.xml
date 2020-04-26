@@ -71,7 +71,8 @@
             android:inputType="textPersonName"
             android:lineSpacingExtra="10sp"
             android:textColor="#A9000000"
-            android:textSize="14sp" />
+            android:textSize="14sp"
+            android:cursorVisible="false"/>
 
         <Button
             android:id="@+id/genderbtn"

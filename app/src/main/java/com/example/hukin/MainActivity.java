@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         //If user had backpressed on any activity, exits app
         if(getIntent().getBooleanExtra("EXIT",false)){
             music.stop();
+            music.release();
             if(Build.VERSION.SDK_INT >= 16)
                 finishAffinity();
             else
@@ -119,6 +120,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        immersiveMode();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         click.release();
@@ -159,5 +166,33 @@ public class MainActivity extends AppCompatActivity {
         TextView messageView = (TextView) alert.findViewById(android.R.id.message);
         messageView.setGravity(Gravity.CENTER_HORIZONTAL);
         messageView.setTextSize(20);
+    }
+
+    //Hides android app's home and back buttons
+    public void immersiveMode() {
+        final View decorView = getWindow().getDecorView();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            decorView.setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+            );
+        }
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        immersiveMode();
+        getWindow().getDecorView().setOnSystemUiVisibilityChangeListener
+                (new View.OnSystemUiVisibilityChangeListener() {
+                    @Override
+                    public void onSystemUiVisibilityChange(int visibility) {
+                        immersiveMode();
+                    }
+                });
     }
 }
