@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 
 public class Movement {
     public static void move(final GameObject q, final int x2, final int y2, final double speed,
-                            final int left, final int right, final int top, final int bottom) {
+                            final Canvas canvas, final CharacterSprites sprite) {
         long start = System.nanoTime();
         int x1 = q.getX();
         int y1 = q.getY();
@@ -22,6 +22,7 @@ public class Movement {
             long deltaTime = (end - start) / 1000000;
             q.setX((int) (x1 - xSpeed * deltaTime));
             q.setY((int) (y1 - ySpeed * deltaTime));
+            sprite.draw(canvas, q.getX() - 64, q.getY() + 64);
         }
         //Hi
     }
@@ -30,11 +31,5 @@ public class Movement {
         final int range = 10;
         final double distance = Math.sqrt((q.getX() - x)*(q.getX() - x) + (q.getY() - y) * (q.getY() - y));
         return distance <= range;
-    }
-
-    //Checks if sprite doesn't go off edge of arena
-    private static boolean checkBoundaries(GameObject q, int x, int y, int left, int right, int top, int bottom) {
-        return !(x >= left && x <= right - q.getWidth()/2 && y <= bottom - q.getHeight()/2
-                && y >= top);
     }
 }
