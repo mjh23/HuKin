@@ -17,5 +17,6 @@
 
     <string name="sound_credits">Royalty free music from https://www.fesliyanstudios.com</string>
     <string name="random_name_credits">Random name generator by names.drycodes.com</string>
+    <string name="tutorial">Tutorial explaination here ... </string>
 
 </resources>

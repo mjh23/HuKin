@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private Button playbtn;
     private Button continuebtn;
     private Button settingsbtn;
+    private Button tutorialbtn;
 
     //Holds click MediaPlayer object
     MediaPlayer click;
@@ -113,6 +114,19 @@ public class MainActivity extends AppCompatActivity {
                     clickSound();
                 }
                 Intent intent = new Intent(getApplicationContext(), GameSettings.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        tutorialbtn = (Button) findViewById(R.id.tutorial_creditsbtn);
+        tutorialbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (SavedData.soundEffOn) {
+                    clickSound();
+                }
+                Intent intent = new Intent(getApplicationContext(), Tutorial_Credits.class);
                 startActivity(intent);
                 finish();
             }

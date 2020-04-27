@@ -30,6 +30,9 @@
         <activity android:name=".GameSettings"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name=".Tutorial_Credits"
+            android:screenOrientation="portrait">
+        </activity>
 
         <meta-data
             android:name="preloaded_fonts"
