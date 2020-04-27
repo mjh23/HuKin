@@ -33,6 +33,7 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
 
     //Storing all game sprites shown
     private CharacterSprites playerSprite;
+    private CharacterSprites enemySprite;
 
     // r is a variable used in the helper method drawCenterTextMod
     private Rect r = new Rect();
@@ -71,6 +72,8 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
         if (SavedData.isOldGame) {
             elapsedTime = SavedData.elapsedTime;
         } else {
+            playerSprite = new CharacterSprites(BitmapFactory.decodeResource(getResources(), R.drawable.char_armor));
+            enemySprite = new CharacterSprites(BitmapFactory.decodeResource(getResources(), R.drawable.char_dark_armor));
             player = new PlayerStatus(128, 128, SavedData.role, playerSprite);
 
             //Initializing values start here...
@@ -278,8 +281,6 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        playerSprite = new CharacterSprites(BitmapFactory.decodeResource(getResources(), R.drawable.char_armor));
-
         thread = new MainThread(getHolder(), this);
         thread.setRunning(true);
         thread.start();

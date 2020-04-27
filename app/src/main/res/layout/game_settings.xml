@@ -54,7 +54,8 @@
             android:checked="true"
             android:fontFamily="@font/aldrich"
             android:text="Toggle Music"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:typeface="monospace" />
 
         <Switch
             android:id="@+id/toggleSound"
@@ -64,7 +65,8 @@
             android:checked="true"
             android:fontFamily="@font/aldrich"
             android:text="Toggle Sound Effects"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:typeface="monospace" />
     </LinearLayout>
 
     <Button
