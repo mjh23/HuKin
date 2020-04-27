@@ -1,5 +1,10 @@
 package com.example.hukin.Logic;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import com.example.hukin.R;
+
 public class Constants {
 
     //Array to organize and store role data

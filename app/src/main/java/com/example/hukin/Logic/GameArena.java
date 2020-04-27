@@ -45,7 +45,7 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
 
     //Turns true when the user taps the upper left menu
     private boolean isUpperMenuSelected = false;
-    private PlayerStatus player = new PlayerStatus(SavedData.role, playerSprite);
+    private PlayerStatus player = new PlayerStatus( SavedData.role, playerSprite);
     private Canvas canvas = new Canvas();
     // Maybe keep track of a roundOver variable?
 
@@ -97,41 +97,47 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
         //Sets x and y positions of where the user tapped
         int x = (int) event.getX();
         int y = (int) event.getY();
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            if (isUpperMenuSelected) {
-                //Check to see if the user is tapping within the menu, otherwise return to the game
-                if (x>=screenWidth/2-400&&x<=screenWidth/2+400&&y>=screenHeight/2-400&&y<=screenHeight/2+400) {
-                    //Return to main menu button
-                    if(x>=screenWidth/2-200&&x<=screenWidth/2+200&&y>=screenHeight/2-300&&y<=screenHeight/2-200) {
-                        if (SavedData.soundEffOn) {
-                            clickSound();
+
+        switch(event.getAction()){
+            //For one taps
+            case MotionEvent.ACTION_DOWN:
+
+                //If the upper menu was opened
+                if (isUpperMenuSelected) {
+                    //Check to see if the user is tapping within the menu, otherwise return to the game
+                    if (x>=screenWidth/2-400&&x<=screenWidth/2+400&&y>=screenHeight/2-400&&y<=screenHeight/2+400) {
+                        //Return to main menu button
+                        if(x>=screenWidth/2-200&&x<=screenWidth/2+200&&y>=screenHeight/2-300&&y<=screenHeight/2-200) {
+                            if (SavedData.soundEffOn) {
+                                clickSound();
+                            }
+
+                            Intent intent = new Intent(getContext(), MainActivity.class);
+                            getContext().startActivity(intent);
+                            gameArenaHolder.finish();
                         }
-
-                        Intent intent = new Intent(getContext(), MainActivity.class);
-                        getContext().startActivity(intent);
-                        gameArenaHolder.finish();
+                    } else {
+                        isUpperMenuSelected = false;
                     }
-                } else {
-                    isUpperMenuSelected = false;
-                }
-            }
-
-            //Checks if upper left menu was pressed
-            if(!isUpperMenuSelected && (x>=50&&x<=200&&y>=50&&y<=170)) {
-                if (SavedData.soundEffOn) {
-                    clickSound();
                 }
 
-                Toast.makeText(getContext(), "Upper Left Menu was pressed!", Toast.LENGTH_SHORT).show();
-                isUpperMenuSelected = true;
-            }
-            if (!isUpperMenuSelected && ((x > leftBound && x < rightBound) && (y < bottomBound && y > topBound))) {
-                Movement.oldMove(player, x - 64, y - 64, canvas, playerSprite);
-            }
+                //Checks if upper left menu was pressed
+                if(!isUpperMenuSelected && (x>=50&&x<=200&&y>=50&&y<=170)) {
+                    if (SavedData.soundEffOn) {
+                        clickSound();
+                    }
 
-            if (gameOver) {
-                //When user taps after game is over.
-            }
+                    Toast.makeText(getContext(), "Upper Left Menu was pressed!", Toast.LENGTH_SHORT).show();
+                    isUpperMenuSelected = true;
+                }
+                if (!isUpperMenuSelected && ((x > leftBound && x < rightBound) && (y < bottomBound && y > topBound))) {
+                    Movement.move(player, x - 64, y - 64, player.getSpeed(), canvas, playerSprite);
+                }
+
+                if (gameOver) {
+                    //When user taps after game is over.
+                }
+                break;
         }
         return true;
     }

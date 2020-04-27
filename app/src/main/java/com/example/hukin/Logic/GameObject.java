@@ -4,7 +4,9 @@ package com.example.hukin.Logic;
  * Defines the basic qualities of any object we create in the game.
  */
 public abstract class GameObject {
+    /** width of image. */
 
+    /** x-coordinate of image location. */
     protected int x;
     /** y-coordinate of image location. */
     protected int y;
@@ -15,12 +17,23 @@ public abstract class GameObject {
      * @param setX sets the x-coordinate of the objects location
      * @param setY sets the y-coordinate of the objects location
      */
-    public GameObject(final int setX, final int setY,
+    public GameObject( final int setX, final int setY,
                       final CharacterSprites setSprite) {
         x = setX;
         y = setY;
         sprite = setSprite;
     }
+
+    /**
+     * Getter for avatar width.
+     * @return width of the object avatar
+     */
+
+
+    /**
+     * Getter for avatar height.
+     * @return height of the object's avatar
+     */
 
 
     /**
@@ -40,6 +53,4 @@ public abstract class GameObject {
     }
     public void setX(int newX) { x = newX; }
     public void setY(int newY) { y = newY; }
-
-    public CharacterSprites getSprite() { return sprite; }
 }

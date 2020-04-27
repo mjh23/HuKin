@@ -24,6 +24,9 @@ public class SavedData {
     //Stores character name
     public static String characterName = "";
 
+    //Save character
+    public static PlayerStatus player;
+
     //Clears the previous saved data
     public static void resetToDefaults() {
         isOldGame = false;
