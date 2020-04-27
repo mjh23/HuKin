@@ -33,6 +33,7 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
 
     //Storing all game sprites shown
     private CharacterSprites playerSprite;
+    private CharacterSprites enemySprite;
 
     // r is a variable used in the helper method drawCenterTextMod
     private Rect r = new Rect();
@@ -45,7 +46,7 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
 
     //Turns true when the user taps the upper left menu
     private boolean isUpperMenuSelected = false;
-    private PlayerStatus player = new PlayerStatus( SavedData.role, playerSprite);
+    private PlayerStatus player;
     private Canvas canvas = new Canvas();
     // Maybe keep track of a roundOver variable?
 
@@ -66,10 +67,21 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
         thread = new MainThread(getHolder(), this);
         setFocusable(true);
         gameArenaHolder = (Activity) context;
-        Log.i("TESTING SURFACEVIEW", "Game Arena Created!");
+
+        leftBound = 50;
+        rightBound = screenWidth - 50;
+        topBound = 200;
+        bottomBound = screenHeight - 300;
         //If user had saved data, initialize those values
         if (SavedData.isOldGame) {
             elapsedTime = SavedData.elapsedTime;
+            playerSprite = SavedData.player.getSprite();
+            player = SavedData.player;
+        } else {
+            playerSprite = new CharacterSprites(BitmapFactory.decodeResource(getResources(), R.drawable.char_armor));
+            enemySprite = new CharacterSprites(BitmapFactory.decodeResource(getResources(), R.drawable.char_dark_armor));
+            player = new PlayerStatus(SavedData.role, playerSprite);
+
         }
 
         //Prepares click sound if sound effects are turned on
@@ -181,10 +193,6 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
         paint.setTextSize(80f);
 
         //Drawing an arena space for the avatar and enemies to move around in.
-        leftBound = 50;
-        rightBound = screenWidth - 50;
-        topBound = 200;
-        bottomBound = screenHeight - 300;
         drawArena(canvas);
 
         if (gameOver) {
@@ -192,7 +200,7 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         //Draw all sprites here
-        playerSprite.draw(canvas, player.getX() , player.getY() + 64);
+        playerSprite.draw(canvas, player.getX() , player.getY());
 
         //Display Elapsed Time
         drawCenterTextMod(canvas, paint, "" + elapsedTime + "\n " + SavedData.characterName, 0, (-screenHeight / 2 + 95));
@@ -265,6 +273,7 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
     public void saveData(){
         SavedData.isOldGame = true;
         SavedData.elapsedTime = elapsedTime;
+        SavedData.player = player;
     }
 
     //Everything below is just to set up game loop
@@ -276,8 +285,6 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        playerSprite = new CharacterSprites(BitmapFactory.decodeResource(getResources(), R.drawable.char_armor));
-
         thread = new MainThread(getHolder(), this);
         thread.setRunning(true);
         thread.start();

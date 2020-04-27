@@ -13,7 +13,6 @@ public class PlayerStatus extends Moveable {
     // Defines how fast the player shoots.
     private double dex;
 
-
     /**
      * Constructs the player avatar.
      * @param setRole player's chosen role
