@@ -68,16 +68,22 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
         setFocusable(true);
         gameArenaHolder = (Activity) context;
 
+        leftBound = 50;
+        rightBound = screenWidth - 50;
+        topBound = 200;
+        bottomBound = screenHeight - 300;
         //If user had saved data, initialize those values
         if (SavedData.isOldGame) {
             elapsedTime = SavedData.elapsedTime;
+            playerSprite = SavedData.player.getSprite();
+            player = SavedData.player;
         } else {
             playerSprite = new CharacterSprites(BitmapFactory.decodeResource(getResources(), R.drawable.char_armor));
             enemySprite = new CharacterSprites(BitmapFactory.decodeResource(getResources(), R.drawable.char_dark_armor));
             player = new PlayerStatus(128, 128, SavedData.role, playerSprite);
 
             //Initializing values start here...
-            //
+            // When loading values here, make sure to complement with if there is saved data
             //
         }
 
@@ -135,8 +141,12 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
                     Toast.makeText(getContext(), "Upper Left Menu was pressed!", Toast.LENGTH_SHORT).show();
                     isUpperMenuSelected = true;
                 }
-                if (!isUpperMenuSelected && ((x > leftBound && x < rightBound) && (y < bottomBound && y > topBound))) {
-                    Movement.move(player, x - 64, y - 64, player.getSpeed(), canvas, playerSprite);
+
+                //Moving player
+                if (!isUpperMenuSelected && ((x >= leftBound && x <= rightBound)
+                        && (y <= bottomBound && y >= topBound))) {
+                    Movement.move(player, x - player.getWidth()/2, y - player.getHeight()/2, player.getSpeed(),
+                            leftBound, rightBound, topBound, bottomBound);
                 }
 
                 if (gameOver) {
@@ -186,10 +196,6 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
         paint.setTextSize(80f);
 
         //Drawing an arena space for the avatar and enemies to move around in.
-        leftBound = 50;
-        rightBound = screenWidth - 50;
-        topBound = 200;
-        bottomBound = screenHeight - 300;
         drawArena(canvas);
 
         if (gameOver) {
@@ -197,7 +203,7 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         //Draw all sprites here
-        playerSprite.draw(canvas, player.getX() , player.getY() + 64);
+        playerSprite.draw(canvas, player.getX(), player.getY());
 
         //Display Elapsed Time
         drawCenterTextMod(canvas, paint, "" + elapsedTime + "\n " + SavedData.characterName, 0, (-screenHeight / 2 + 95));
@@ -270,6 +276,7 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
     public void saveData(){
         SavedData.isOldGame = true;
         SavedData.elapsedTime = elapsedTime;
+        SavedData.player = player;
     }
 
     //Everything below is just to set up game loop

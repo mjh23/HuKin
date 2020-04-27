@@ -6,7 +6,7 @@ import android.graphics.Canvas;
 public class CharacterSprites {
 
     //Stores all the bitmaps used in game
-    private static Bitmap image;
+    private Bitmap image;
 
     public CharacterSprites(Bitmap bmp) {
         image = Bitmap.createScaledBitmap(bmp, 128,128, false);

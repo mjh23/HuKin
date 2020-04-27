@@ -82,9 +82,6 @@ public class PlayerSettings extends AppCompatActivity {
         //Prepares click sound if sound effects are turned on
         click = MediaPlayer.create(PlayerSettings.this, R.raw.click);
 
-        //Prepares background image
-        background = (ImageView) findViewById(R.id.background);
-
         //Player clicks on "Return" Button
         returnbtn = (Button) findViewById(R.id.returnbtn1);
         returnbtn.setOnClickListener(new View.OnClickListener() {

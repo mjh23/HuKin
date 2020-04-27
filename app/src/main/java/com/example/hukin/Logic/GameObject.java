@@ -63,4 +63,9 @@ public abstract class GameObject {
     }
     public void setX(int newX) { x = newX; }
     public void setY(int newY) { y = newY; }
+
+    //Get sprite of object
+    public CharacterSprites getSprite() {
+        return sprite;
+    }
 }
