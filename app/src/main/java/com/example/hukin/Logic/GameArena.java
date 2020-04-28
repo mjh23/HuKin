@@ -78,7 +78,7 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
             playerSprite = SavedData.player.getSprite();
             player = SavedData.player;
         } else {
-            playerSprite = new CharacterSprites(BitmapFactory.decodeResource(getResources(), R.drawable.char_armor));
+            setPlayerSprite();
             enemySprite = new CharacterSprites(BitmapFactory.decodeResource(getResources(), R.drawable.char_dark_armor));
             player = new PlayerStatus(SavedData.role, playerSprite);
 
@@ -274,6 +274,23 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
         SavedData.isOldGame = true;
         SavedData.elapsedTime = elapsedTime;
         SavedData.player = player;
+    }
+
+    private void setPlayerSprite() {
+        switch (SavedData.role) {
+            case 0:
+                playerSprite = new CharacterSprites(BitmapFactory.decodeResource(getResources(), R.drawable.char_armor));
+                break;
+            case 1:
+                playerSprite = new CharacterSprites(BitmapFactory.decodeResource(getResources(), R.drawable.ranger));
+                break;
+            case 2:
+                playerSprite = new CharacterSprites(BitmapFactory.decodeResource(getResources(), R.drawable.wizard));
+                break;
+            case 3:
+                playerSprite = new CharacterSprites(BitmapFactory.decodeResource(getResources(), R.drawable.bard));
+                break;
+        }
     }
 
     //Everything below is just to set up game loop

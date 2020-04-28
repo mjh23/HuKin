@@ -271,12 +271,15 @@ public class PlayerSettings extends AppCompatActivity {
                 break;
             case 1:
                 roleDescrip.setText(R.string.ranger_descrip);
+                displaySprite.setImageResource(R.drawable.ranger);
                 break;
             case 2:
                 roleDescrip.setText(R.string.wizard_descrip);
+                displaySprite.setImageResource(R.drawable.wizard);
                 break;
             case 3:
                 roleDescrip.setText(R.string.bard_descrip);
+                displaySprite.setImageResource(R.drawable.bard);
                 break;
         }
 
