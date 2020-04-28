@@ -54,6 +54,9 @@ public class PlayerSettings extends AppCompatActivity {
     private TextView damage;
     private TextView range;
 
+    //Stores Imageview for changing the sprite displayed
+    private ImageView displaySprite;
+
     //Stores background image
     private ImageView background;
 
@@ -152,10 +155,10 @@ public class PlayerSettings extends AppCompatActivity {
 
                 //If displayed is M, then clicking turns to to F and vise versa
                 if (genderBtn.getText().equals("M")) {
-                    charGender = false;
+                    charGender = true;
                     genderBtn.setText("F");
                 } else {
-                    charGender = true;
+                    charGender = false;
                     genderBtn.setText("M");
                 }
             }
@@ -172,6 +175,7 @@ public class PlayerSettings extends AppCompatActivity {
         damage = (TextView) findViewById(R.id.damageTextView);
         range = (TextView) findViewById(R.id.rangeTextView);
 
+        updateText(role);
         nextBtn = (Button) findViewById(R.id.nextBtn);
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -256,10 +260,14 @@ public class PlayerSettings extends AppCompatActivity {
     private void updateText(int role) {
         //Set header
         roleHeader.setText("The " + Constants.getRole(role));
-        //Set description
+
+        //Set description & (combined with)
+        //Change displayed sprite to match role
+        displaySprite = (ImageView) findViewById(R.id.imageView);
         switch (role) {
             case 0:
                 roleDescrip.setText(R.string.warrior_descrip);
+                displaySprite.setImageResource(R.drawable.char_armor);
                 break;
             case 1:
                 roleDescrip.setText(R.string.ranger_descrip);
@@ -271,6 +279,7 @@ public class PlayerSettings extends AppCompatActivity {
                 roleDescrip.setText(R.string.bard_descrip);
                 break;
         }
+
         //Set stats, SpannableString used to highlight numbers
         String h = "Hitpoints: " + Constants.getHitpoints(role);
         SpannableString spannableString = new SpannableString(h);
