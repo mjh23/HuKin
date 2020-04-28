@@ -48,6 +48,7 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
     private boolean isUpperMenuSelected = false;
     private PlayerStatus player;
     private Canvas canvas = new Canvas();
+    private Enemy[] enemies;
     // Maybe keep track of a roundOver variable?
 
     /*
@@ -59,6 +60,7 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
     public static int rightBound;
     public static int topBound;
     public static int bottomBound;
+
 
     public GameArena(Context context) {
         //Set up game loop
@@ -77,12 +79,14 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
             elapsedTime = SavedData.elapsedTime;
             playerSprite = SavedData.player.getSprite();
             player = SavedData.player;
+            player.move = SavedData.movePlayer;
         } else {
             setPlayerSprite();
             enemySprite = new CharacterSprites(BitmapFactory.decodeResource(getResources(), R.drawable.char_dark_armor));
-            player = new PlayerStatus(SavedData.role, playerSprite);
+            player = new PlayerStatus(SavedData.role, playerSprite, canvas);
 
         }
+
 
         //Prepares click sound if sound effects are turned on
         click = MediaPlayer.create(gameArenaHolder, R.raw.click);
@@ -143,7 +147,8 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
                     isUpperMenuSelected = true;
                 }
                 if (!isUpperMenuSelected && ((x > leftBound && x < rightBound) && (y < bottomBound && y > topBound))) {
-                    Movement.move(player, x - 64, y - 64, player.getSpeed(), canvas, playerSprite);
+                    player.move.setTarg(x, y);
+                    //Movement.move(player, x - 64, y - 64, canvas, playerSprite);
                 }
 
                 if (gameOver) {
@@ -159,14 +164,14 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
      */
     public void update() {
         saveData();
-
         if (isUpperMenuSelected) {
             //Does not update anything on screen
             return;
         }
         //Elapsed time incremented here by 1
         elapsedTime++;
-
+        player.move.move2();
+        
         if (gameOver) {
             //When game is over
         }
@@ -201,6 +206,12 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
 
         //Draw all sprites here
         playerSprite.draw(canvas, player.getX() , player.getY());
+        levelEnemies n1 = new levelEnemies(0, 1, enemySprite, canvas);
+        levelEnemies n2 = new levelEnemies(0, 1, enemySprite, canvas);
+        levelEnemies n3 = new levelEnemies(0, 1, enemySprite, canvas);
+        levelEnemies n4 = new levelEnemies(0, 1, enemySprite, canvas);
+        levelEnemies[] arr = {n1, n2, n3, n4};
+        enemies = WaveGenerator.wave(arr);
 
         //Display Elapsed Time
         drawCenterTextMod(canvas, paint, "" + elapsedTime + "\n " + SavedData.characterName, 0, (-screenHeight / 2 + 95));
@@ -274,6 +285,7 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
         SavedData.isOldGame = true;
         SavedData.elapsedTime = elapsedTime;
         SavedData.player = player;
+        SavedData.movePlayer = player.move;
     }
 
     private void setPlayerSprite() {

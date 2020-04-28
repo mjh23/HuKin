@@ -1,5 +1,7 @@
 package com.example.hukin.Logic;
 
+import android.graphics.Canvas;
+
 /**
  * Defines the basic qualities of any object we create in the game.
  */
@@ -11,6 +13,7 @@ public abstract class GameObject {
     /** y-coordinate of image location. */
     protected int y;
     private CharacterSprites sprite;
+    protected Canvas canvas;
 
     /**
      * Constructs Game Object.
@@ -18,7 +21,8 @@ public abstract class GameObject {
      * @param setY sets the y-coordinate of the objects location
      */
     public GameObject( final int setX, final int setY,
-                      final CharacterSprites setSprite) {
+                      final CharacterSprites setSprite, final Canvas setCanvas) {
+        canvas = setCanvas;
         x = setX;
         y = setY;
         sprite = setSprite;

@@ -1,5 +1,7 @@
 package com.example.hukin.Logic;
 
+import android.graphics.Canvas;
+
 public class PlayerStatus extends Moveable {
     // Defines the class that the player selected
     private final int playerRole;
@@ -18,9 +20,9 @@ public class PlayerStatus extends Moveable {
      * @param setRole player's chosen role
      */
     public PlayerStatus(final int setRole,
-                        final CharacterSprites setSprite) {
+                        final CharacterSprites setSprite, final Canvas setCanvas) {
         super( (GameArena.rightBound - GameArena.leftBound)/2,
-                (GameArena.bottomBound - GameArena.topBound)/2, setSprite, Constants.getSpeed(setRole));
+                (GameArena.bottomBound - GameArena.topBound)/2, setSprite, Constants.getSpeed(setRole), setCanvas);
         playerRole = setRole;
         speed = Constants.getSpeed(playerRole);
         damage = Constants.getDamage(playerRole);

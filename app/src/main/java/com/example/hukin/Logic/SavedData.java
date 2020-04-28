@@ -32,4 +32,6 @@ public class SavedData {
         isOldGame = false;
     }
 
+    public static Movement movePlayer = null;
+
 }

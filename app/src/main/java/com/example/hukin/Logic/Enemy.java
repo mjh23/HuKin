@@ -1,5 +1,7 @@
 package com.example.hukin.Logic;
 
+import android.graphics.Canvas;
+
 public class Enemy extends Moveable {
     private final int enemyRole;
     // Defines the player's speed.
@@ -11,14 +13,14 @@ public class Enemy extends Moveable {
     private double range;
     // Defines how fast the player shoots.
     private double dex;
-    Enemy (final int x, final int y, final CharacterSprites setSprite, final double setSpeed, final int setRole) {
-        super(x, y, setSprite, Constants.getSpeed(setRole));
+    Enemy (final int x, final int y, final CharacterSprites setSprite, final int setRole, final int level, final Canvas setCanvas) {
+        super(x, y, setSprite, Constants.getSpeed(setRole), setCanvas);
         enemyRole = setRole;
         speed = Constants.getSpeed(enemyRole);
-        damage = Constants.getDamage(enemyRole);
-        hitPoints = Constants.getHitpoints(enemyRole);
-        range = Constants.getRange(enemyRole);
-        dex = Constants.getDex(enemyRole);
+        damage = Constants.getDamage(enemyRole) * level / 10;
+        hitPoints = Constants.getHitpoints(enemyRole) * level / 10;
+        range = Constants.getRange(enemyRole) / 1.5;
+        dex = Constants.getDex(enemyRole) / 2;
 
     }
 
@@ -41,4 +43,6 @@ public class Enemy extends Moveable {
     public double getRange() {
         return range;
     }
+
+
 }
