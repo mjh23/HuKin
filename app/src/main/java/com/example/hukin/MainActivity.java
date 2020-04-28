@@ -1,17 +1,21 @@
 package com.example.hukin;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.hukin.Logic.SavedData;
@@ -55,6 +59,14 @@ public class MainActivity extends AppCompatActivity {
                     | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
             );
         }
+
+        //Prepares animated background
+        //ConstraintLayout constraintLayout = findViewById(R.id.layout);
+        ImageView background = (ImageView) findViewById(R.id.background1);
+        AnimationDrawable animationDrawable = (AnimationDrawable) background.getBackground();
+        animationDrawable.setEnterFadeDuration(2000);
+        animationDrawable.setExitFadeDuration(4000);
+        animationDrawable.start();
 
         //Prepares click sound if sound effects are turned on
         click = MediaPlayer.create(MainActivity.this, R.raw.click);

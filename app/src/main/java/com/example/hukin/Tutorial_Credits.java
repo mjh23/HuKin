@@ -6,12 +6,27 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.hukin.Logic.SavedData;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONStringer;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,6 +35,10 @@ public class Tutorial_Credits extends AppCompatActivity {
     MediaPlayer click;
 
     private Button returnbtn;
+    private TextView jokeText;
+
+    //For API calls of dad jokes, requestqueue
+    private RequestQueue mQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +63,12 @@ public class Tutorial_Credits extends AppCompatActivity {
                 finish();
             }
         });
+
+        jokeText = (TextView) findViewById(R.id.dadjoke);
+
+        //Prepares Dad joke
+        mQueue = Volley.newRequestQueue(Tutorial_Credits.this);
+        jsonParse();
     }
 
     @Override
@@ -56,6 +81,30 @@ public class Tutorial_Credits extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         click.release();
+    }
+
+    public void jsonParse() {
+        String url = "https://icanhazdadjoke.com/";
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONObject jokeJson = response;
+                            String joke = jokeJson.getString("joke");
+                            jokeText.setText(joke);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        mQueue.add(request);
     }
 
     //Plays click sound effect
