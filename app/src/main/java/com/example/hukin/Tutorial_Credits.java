@@ -84,7 +84,7 @@ public class Tutorial_Credits extends AppCompatActivity {
     }
 
     public void jsonParse() {
-        String url = "https://icanhazdadjoke.com/";
+        String url = "https://us-central1-dadsofunny.cloudfunctions.net/DadJokes/random/jokes";
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -92,8 +92,9 @@ public class Tutorial_Credits extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         try {
                             JSONObject jokeJson = response;
-                            String joke = jokeJson.getString("joke");
-                            jokeText.setText(joke);
+                            String setup = jokeJson.getString("setup");
+                            String punchline = jokeJson.getString("punchline");
+                            jokeText.setText("Message from the bard: \n" + "\"" + setup + " " + punchline + "\"\n");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
