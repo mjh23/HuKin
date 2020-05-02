@@ -2,6 +2,8 @@ package com.example.hukin.Logic;
 
 import android.media.MediaPlayer;
 
+import java.util.List;
+
 public class SavedData {
 
     //Stores whether user is continuing/just started a game or not
@@ -33,5 +35,9 @@ public class SavedData {
     }
 
     public static Movement movePlayer = null;
+
+    public static int lvl = 0;
+
+    public static List<Enemy> enemies;
 
 }

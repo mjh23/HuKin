@@ -65,7 +65,7 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
     public static int rightBound;
     public static int topBound;
     public static int bottomBound;
-    private int lvl = 0;
+    private int lvl;
 
 
     public GameArena(Context context) {
@@ -86,11 +86,13 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
             playerSprite = SavedData.player.getSprite();
             player = SavedData.player;
             player.move = SavedData.movePlayer;
+            lvl = SavedData.lvl;
+            enemies = SavedData.enemies;
         } else {
             setPlayerSprite();
             enemySprite = new CharacterSprites(BitmapFactory.decodeResource(getResources(), R.drawable.char_dark_armor));
             player = new PlayerStatus(SavedData.role, playerSprite, canvas);
-
+            lvl = 0;
         }
 
         //Prepares click sound if sound effects are turned on
@@ -190,20 +192,39 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
             }
             if (!Aimer.inRange(e, player, e.getRange())) {
                 e.move.move2();
-            } else if (elapsedTime % (e.getDex() * 40) == 0) {
+            } else if (elapsedTime % (e.getDex() * 10) == 0) {
                 Projectile p = new Projectile(e, player);
                 eProjectiles.add(p);
             }
         }
+
         if (elapsedTime % (player.getDex() * 10) == 0 && enemies.size() != 0) {
-            Projectile p = new Projectile(player, enemies);
-            pProjectiles.add(p);
+            if (player.getPlayerRole() == 3) {
+                for (Enemy e : enemies) {
+                    Damager.damage(e,player);
+                }
+            } else {
+                Projectile p = new Projectile(player, enemies);
+                pProjectiles.add(p);
+            }
         }
         //Elapsed time incremented here by 1
         elapsedTime++;
         player.move.move2();
         Movement.massFire(eProjectiles);
-        Movement.massFire(pProjectiles);
+        if (player.getPlayerRole() != 3) {
+            Movement.massFire(pProjectiles);
+            for ( Projectile k : pProjectiles) {
+                for (Enemy e : enemies) {
+                    if (k.move.hitAvatar(e)) {
+                        Damager.damage(e, k);
+                    }
+                }
+                if (k.move.HitTarget()) {
+                    pProjectiles.remove(k);
+                }
+            }
+        }
         for ( Projectile k : eProjectiles) {
             if (k.move.hitAvatar(player)) {
                 Damager.damage(player, k);
@@ -212,16 +233,7 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
                 eProjectiles.remove(k);
             }
         }
-        for ( Projectile k : pProjectiles) {
-            for (Enemy e : enemies) {
-                if (k.move.hitAvatar(e)) {
-                    Damager.damage(e, k);
-                }
-            }
-            if (k.move.HitTarget()) {
-                pProjectiles.remove(k);
-            }
-        }
+
         if (gameOver) {
 
         }
@@ -341,6 +353,8 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
         SavedData.elapsedTime = elapsedTime;
         SavedData.player = player;
         SavedData.movePlayer = player.move;
+        SavedData.lvl = lvl;
+        SavedData.enemies = enemies;
     }
 
     private void setPlayerSprite() {

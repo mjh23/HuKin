@@ -19,7 +19,7 @@ public class Enemy extends Moveable {
         speed = Constants.getSpeed(enemyRole)/3;
         damage = Constants.getDamage(enemyRole) * level / 10;
         hitPoints = Constants.getHitpoints(enemyRole) * level / 10;
-        range = Constants.getRange(enemyRole) * 150;
+        range = Constants.getRange(enemyRole) * 100;
         dex = Constants.getDex(enemyRole) / 2;
 
     }

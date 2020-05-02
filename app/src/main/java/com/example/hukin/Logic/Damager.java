@@ -10,4 +10,11 @@ public class Damager {
             q.changeHealth(q2.getDamage());
         }
     }
+    public static void damage(Enemy e, PlayerStatus p) {
+        if (Aimer.inRange(e, p, p.getRange())) {
+            e.changeHealth(p.getDamage());
+        } else {
+            return;
+        }
+    }
 }
