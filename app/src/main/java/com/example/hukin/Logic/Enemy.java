@@ -13,10 +13,10 @@ public class Enemy extends Moveable {
     private double range;
     // Defines how fast the player shoots.
     private double dex;
-    Enemy (final int x, final int y, final CharacterSprites setSprite, final int setRole, final int level, final Canvas setCanvas) {
-        super(x, y, setSprite, Constants.getSpeed(setRole), setCanvas);
+    Enemy (final int x, final int y, final CharacterSprites setSprite, final int setRole, final int level, final Canvas setCanvas, final PlayerStatus player) {
+        super(x, y, setSprite, Constants.getSpeed(setRole), setCanvas, player);
         enemyRole = setRole;
-        speed = Constants.getSpeed(enemyRole);
+        speed = Constants.getSpeed(enemyRole)/3;
         damage = Constants.getDamage(enemyRole) * level / 10;
         hitPoints = Constants.getHitpoints(enemyRole) * level / 10;
         range = Constants.getRange(enemyRole) / 1.5;

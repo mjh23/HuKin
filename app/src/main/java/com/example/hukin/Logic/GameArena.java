@@ -86,6 +86,12 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
             player = new PlayerStatus(SavedData.role, playerSprite, canvas);
 
         }
+        levelEnemies n1 = new levelEnemies(0, 1, enemySprite, canvas, player);
+        levelEnemies n2 = new levelEnemies(0, 1, enemySprite, canvas, player);
+        levelEnemies n3 = new levelEnemies(0, 1, enemySprite, canvas, player);
+        levelEnemies n4 = new levelEnemies(0, 1, enemySprite, canvas, player);
+        levelEnemies[] arr = {n1, n2, n3, n4};
+        enemies = WaveGenerator.wave(arr);
 
 
         //Prepares click sound if sound effects are turned on
@@ -148,6 +154,9 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
                 }
                 if (!isUpperMenuSelected && ((x > leftBound && x < rightBound) && (y < bottomBound && y > topBound))) {
                     player.move.setTarg(x, y);
+                    for (Enemy enemy : enemies) {
+                        enemy.move.setTarg(x, y);
+                    }
                     //Movement.move(player, x - 64, y - 64, canvas, playerSprite);
                 }
 
@@ -171,7 +180,8 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
         //Elapsed time incremented here by 1
         elapsedTime++;
         player.move.move2();
-        
+        Movement.massMover(enemies);
+
         if (gameOver) {
             //When game is over
         }
@@ -206,12 +216,9 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
 
         //Draw all sprites here
         playerSprite.draw(canvas, player.getX() , player.getY());
-        levelEnemies n1 = new levelEnemies(0, 1, enemySprite, canvas);
-        levelEnemies n2 = new levelEnemies(0, 1, enemySprite, canvas);
-        levelEnemies n3 = new levelEnemies(0, 1, enemySprite, canvas);
-        levelEnemies n4 = new levelEnemies(0, 1, enemySprite, canvas);
-        levelEnemies[] arr = {n1, n2, n3, n4};
-        enemies = WaveGenerator.wave(arr);
+        for (Enemy d : enemies) {
+            enemySprite.draw(canvas, d.getX(), d.getY());
+        }
 
         //Display Elapsed Time
         drawCenterTextMod(canvas, paint, "" + elapsedTime + "\n " + SavedData.characterName, 0, (-screenHeight / 2 + 95));

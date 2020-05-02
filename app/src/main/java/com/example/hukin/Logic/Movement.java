@@ -15,6 +15,14 @@ public class Movement {
         canvi = setV.canvas;
         spriter = setSprite;
     }
+    Movement(final Moveable setV, final CharacterSprites setSprite, final PlayerStatus player) {
+        v = setV;
+        targX = player.getX();
+        targY = player.getY();
+        canvi = setV.canvas;
+        spriter = setSprite;
+    }
+
     public void setTarg(final int newX, final int newY) {
         targX = newX;
         targY = newY;
