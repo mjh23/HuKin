@@ -13,7 +13,7 @@ public class WaveGenerator {
         for (int j = 1; j <= n; j++) {
             if (i < arr.length) {
                 Enemy q = new Enemy(GameArena.leftBound - 64 + j * length / (n + 1),
-                        GameArena.topBound +16, arr[i].sprite, arr[i].role, arr[i].level, arr[i].canvas, arr[i].playTarg);
+                        GameArena.topBound + 128, arr[i].sprite, arr[i].role, arr[i].level, arr[i].canvas, arr[i].playTarg);
                 l2.add(q);
                 i++;
             }

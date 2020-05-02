@@ -153,10 +153,10 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
                     Toast.makeText(getContext(), "Upper Left Menu was pressed!", Toast.LENGTH_SHORT).show();
                     isUpperMenuSelected = true;
                 }
-                if (!isUpperMenuSelected && ((x > leftBound && x < rightBound) && (y < bottomBound && y > topBound))) {
+                if (!isUpperMenuSelected && ((x > leftBound +32 && x < rightBound - 32) && (y < bottomBound  - 32 && y > topBound - 32))) {
                     player.move.setTarg(x, y);
                     for (Enemy enemy : enemies) {
-                        enemy.move.setTarg(x - 64, y - 64);
+                        enemy.move.setTarg(x - 64, y );
                     }
                     //Movement.move(player, x - 64, y - 64, canvas, playerSprite);
                 }
@@ -267,15 +267,15 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         //Draw all sprites here
-        playerSprite.draw(canvas, player.getX() - 64 , player.getY() + 64);
+        playerSprite.draw(canvas, player.getX() - 64 , player.getY() - 64);
         for (Enemy d : enemies) {
-            enemySprite.draw(canvas, d.getX() - 64, d.getY() + 64);
+            enemySprite.draw(canvas, d.getX() - 64, d.getY() - 64);
         }
         for (Projectile x : eProjectiles) {
-            canvas.drawRect(x.getX()-10, x.getY() + 10, x.getX() + 10, x.getY()-10, paint);
+            canvas.drawRect(x.getX()-10 +64, x.getY() + 10 + 64, x.getX() + 10+64 , x.getY()-10 +64, paint);
         }
         for (Projectile x : pProjectiles) {
-            canvas.drawRect(x.getX()-10, x.getY() + 10, x.getX() + 10, x.getY()-10, paint);
+            canvas.drawRect(x.getX()-10 +64, x.getY() + 10 + 64, x.getX() + 10+64, x.getY()-10 + 64, paint);
         }
 
 
