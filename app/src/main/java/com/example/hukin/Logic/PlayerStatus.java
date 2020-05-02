@@ -27,7 +27,7 @@ public class PlayerStatus extends Moveable {
         speed = Constants.getSpeed(playerRole);
         damage = Constants.getDamage(playerRole);
         hitPoints = Constants.getHitpoints(playerRole);
-        range = Constants.getRange(playerRole);
+        range = Constants.getRange(playerRole) * 200;
         dex = Constants.getDex(playerRole);
     }
 
@@ -51,4 +51,5 @@ public class PlayerStatus extends Moveable {
     public double getRange() {
         return range;
     }
+    public void changeHealth(double dmg) { hitPoints -= dmg; }
 }

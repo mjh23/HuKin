@@ -15,6 +15,12 @@ public class Moveable extends GameObject {
         speed = setSpeed;
         move = new Movement(this, this.getSprite(), player);
     }
+    Moveable(final int x, final int y, final double setSpeed, final Canvas setCanvas, GameObject p) {
+        super(x, y, setCanvas);
+        speed = setSpeed;
+        move = new Movement(this, p);
+    }
+
 
 
     public double getSpeed() {

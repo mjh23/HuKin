@@ -27,6 +27,12 @@ public abstract class GameObject {
         y = setY;
         sprite = setSprite;
     }
+    public GameObject (final int setX, final int setY, final Canvas setCanvas) {
+        canvas = setCanvas;
+        x = setX;
+        y = setY;
+        sprite = null;
+    }
 
     /**
      * Getter for avatar width.

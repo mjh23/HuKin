@@ -19,6 +19,9 @@ import android.widget.Toast;
 import com.example.hukin.MainActivity;
 import com.example.hukin.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
 
     MediaPlayer click;
@@ -48,7 +51,9 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
     private boolean isUpperMenuSelected = false;
     private PlayerStatus player;
     private Canvas canvas = new Canvas();
-    private Enemy[] enemies;
+    public  List<Enemy> enemies;
+    public List<Projectile> eProjectiles = new ArrayList<>();
+    public List<Projectile> pProjectiles = new ArrayList<>();
     // Maybe keep track of a roundOver variable?
 
     /*
@@ -155,7 +160,7 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
                 if (!isUpperMenuSelected && ((x > leftBound && x < rightBound) && (y < bottomBound && y > topBound))) {
                     player.move.setTarg(x, y);
                     for (Enemy enemy : enemies) {
-                        enemy.move.setTarg(x, y);
+                        enemy.move.setTarg(x - 64, y - 64);
                     }
                     //Movement.move(player, x - 64, y - 64, canvas, playerSprite);
                 }
@@ -177,13 +182,49 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
             //Does not update anything on screen
             return;
         }
+        if (player.getHitPoints() <= 0) {
+            gameOver = false;
+        }
+        for (Enemy e : enemies) {
+            if (e.getHitPoints() <= 0) {
+                boolean bool = enemies.remove(e);
+            }
+            if (!Aimer.inRange(e, player, e.getRange())) {
+                e.move.move2();
+            } else if (elapsedTime % (e.getDex() * 40) == 0) {
+                Projectile p = new Projectile(e, player);
+                eProjectiles.add(p);
+            }
+        }
+        if (elapsedTime % (player.getDex() * 10) == 0 && enemies.size() != 0) {
+            Projectile p = new Projectile(player, enemies);
+            pProjectiles.add(p);
+        }
         //Elapsed time incremented here by 1
         elapsedTime++;
         player.move.move2();
-        Movement.massMover(enemies);
-
+        Movement.massFire(eProjectiles);
+        Movement.massFire(pProjectiles);
+        for ( Projectile k : eProjectiles) {
+            if (k.move.hitAvatar(player)) {
+                Damager.damage(player, k);
+            }
+            if (k.move.HitTarget()) {
+                eProjectiles.remove(k);
+            }
+        }
+        for ( Projectile k : pProjectiles) {
+            for (Enemy e : enemies) {
+                if (k.move.hitAvatar(e)) {
+                    Damager.damage(e, k);
+                }
+            }
+            if (k.move.HitTarget()) {
+                pProjectiles.remove(k);
+            }
+        }
         if (gameOver) {
-            //When game is over
+
         }
     }
 
@@ -215,10 +256,18 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         //Draw all sprites here
-        playerSprite.draw(canvas, player.getX() , player.getY());
+        playerSprite.draw(canvas, player.getX() - 64 , player.getY() + 64);
         for (Enemy d : enemies) {
-            enemySprite.draw(canvas, d.getX(), d.getY());
+            enemySprite.draw(canvas, d.getX() - 64, d.getY() + 64);
         }
+        for (Projectile x : eProjectiles) {
+            canvas.drawRect(x.getX()-10, x.getY() + 10, x.getX() + 10, x.getY()-10, paint);
+        }
+        for (Projectile x : pProjectiles) {
+            canvas.drawRect(x.getX()-10, x.getY() + 10, x.getX() + 10, x.getY()-10, paint);
+        }
+
+
 
         //Display Elapsed Time
         drawCenterTextMod(canvas, paint, "" + elapsedTime + "\n " + SavedData.characterName, 0, (-screenHeight / 2 + 95));

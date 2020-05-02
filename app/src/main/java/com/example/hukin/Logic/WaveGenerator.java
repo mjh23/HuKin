@@ -1,8 +1,11 @@
 package com.example.hukin.Logic;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class WaveGenerator {
-    public static Enemy[] wave(levelEnemies[] arr) {
-        Enemy[] arr2 = new Enemy[arr.length];
+    public static List<Enemy> wave(levelEnemies[] arr) {
+        List<Enemy> l2 = new ArrayList<>();
         int length = GameArena.rightBound - GameArena.leftBound;
         int height = GameArena.bottomBound - GameArena.topBound;
         int n = arr.length / 4 + 1;
@@ -11,7 +14,7 @@ public class WaveGenerator {
             Enemy q = new Enemy(GameArena.leftBound - 64 + j * length / (n + 1),
                     GameArena.topBound +16, arr[i].sprite, arr[i].role, arr[i].level, arr[i].canvas, arr[i].playTarg);
             if (i < arr.length) {
-                arr2[i] = q;
+                l2.add(q);
                 i++;
             }
         }
@@ -19,7 +22,7 @@ public class WaveGenerator {
             Enemy q = new Enemy(GameArena.leftBound - 64 + j * length / (n + 1),
                     GameArena.bottomBound -128, arr[i].sprite, arr[i].role, arr[i].level, arr[i].canvas, arr[i].playTarg);
             if (i < arr.length) {
-                arr2[i] = q;
+                l2.add(q);
                 i++;
             }
         }
@@ -27,7 +30,7 @@ public class WaveGenerator {
             Enemy q = new Enemy(GameArena.leftBound + 64,GameArena.topBound + 64 + j * height / (n + 1),
                     arr[i].sprite, arr[i].role, arr[i].level, arr[i].canvas, arr[i].playTarg);
             if (i < arr.length) {
-                arr2[i] = q;
+                l2.add(q);
                 i++;
             }
         }
@@ -35,11 +38,11 @@ public class WaveGenerator {
             Enemy q = new Enemy(GameArena.rightBound - 64,GameArena.topBound + 64 + j * height / (n + 1),
                     arr[i].sprite, arr[i].role, arr[i].level, arr[i].canvas, arr[i].playTarg);
             if (i < arr.length) {
-                arr2[i] = q;
+                l2.add(q);
                 i++;
             }
         }
 
-        return arr2;
+        return l2;
     }
 }
