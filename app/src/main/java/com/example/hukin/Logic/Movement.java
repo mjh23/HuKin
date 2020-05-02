@@ -70,7 +70,7 @@ public class Movement {
         int x1 = v.getX();
         int y1 = v.getY();
         double distance = Math.sqrt((x1-targX)*(x1-targX)+(y1-targY)*(y1-targY));
-        double Velocity = v.getSpeed() * 3;
+        double Velocity = v.getSpeed() * 1;
         double time = distance/Velocity;
         double xSpeed = (x1-targX)/time;
         double ySpeed = (y1-targY)/time;
@@ -127,7 +127,7 @@ public class Movement {
         }
     }
     public boolean hitAvatar(GameObject o) {
-        if (Aimer.getDist(this.v, o) < 64) {
+        if (Aimer.getDist(this.v, o) < 75) {
             return true;
         }
         return false;

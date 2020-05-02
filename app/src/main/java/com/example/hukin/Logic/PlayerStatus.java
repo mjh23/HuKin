@@ -32,7 +32,7 @@ public class PlayerStatus extends Moveable {
     }
 
     // A whole bunch of self-explanatory get functions
-    public double getPlayerRole() {
+    public int getPlayerRole() {
         return playerRole;
     }
 

@@ -162,7 +162,13 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
                 }
 
                 if (gameOver) {
-                    //When user taps after game is over.
+                    if (SavedData.soundEffOn) {
+                        clickSound();
+                    }
+
+                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    getContext().startActivity(intent);
+                    gameArenaHolder.finish();//When user taps after game is over.
                 }
                 break;
         }
@@ -180,7 +186,10 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
         }
 
         if (player.getHitPoints() <= 0) {
-            gameOver = false;
+            gameOver = true;
+        }
+        if (gameOver) {
+
         }
         if (enemies.size() == 0) {
             enemies = Levels.level(lvl, enemySprite, canvas, player);
@@ -234,9 +243,7 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
             }
         }
 
-        if (gameOver) {
 
-        }
     }
 
     /*
@@ -263,8 +270,14 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
         drawArena(canvas);
 
         if (gameOver) {
+            drawGameOverPopout(canvas);
+            drawCenterTextMod(canvas, paint, "Congratulations!" , 0, -250);
+            drawCenterTextMod(canvas, paint, "You made it to level " + lvl + "!" , 0, -100);
             //When game is over
         }
+        Paint hpBar = new Paint();
+        hpBar.setColor(Color.GREEN);
+        canvas.drawRect(leftBound, bottomBound + 50, (float) ((leftBound + rightBound)/2 * (player.getHitPoints()/Constants.getHitpoints(player.getPlayerRole()))), bottomBound + 150, hpBar);
 
         //Draw all sprites here
         playerSprite.draw(canvas, player.getX() - 64 , player.getY() - 64);
@@ -313,6 +326,21 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
         menu.setColor(getResources().getColor(R.color.colorPrimaryDark));
         menu.setStyle(Paint.Style.FILL);
         canvas.drawRect(screenWidth/2 - 400, screenHeight/2 - 400, screenWidth/2 + 400, screenHeight/2 + 400, menu);
+        menu.setColor(Color.BLACK);
+        menu.setStyle(Paint.Style.STROKE);
+        menu.setStrokeWidth(10);
+        canvas.drawRect(screenWidth/2 - 400, screenHeight/2 - 400, screenWidth/2 + 400, screenHeight/2 + 400, menu);
+    }
+
+    private void drawGameOverPopout(Canvas canvas) {
+        Paint shade = new Paint();
+        shade.setColor(Color.GRAY);
+        shade.setAlpha(200);
+        canvas.drawRect(0, 0, screenWidth, screenHeight, shade);
+        Paint menu = new Paint();
+        menu.setColor(getResources().getColor(R.color.colorPrimaryDark));
+        menu.setStyle(Paint.Style.FILL);
+        canvas.drawRect(screenWidth/2 - 450, screenHeight/2 - 400, screenWidth/2 + 450, screenHeight/2 + 400, menu);
         menu.setColor(Color.BLACK);
         menu.setStyle(Paint.Style.STROKE);
         menu.setStrokeWidth(10);
