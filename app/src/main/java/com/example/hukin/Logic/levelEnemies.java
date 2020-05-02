@@ -16,4 +16,5 @@ public class levelEnemies {
         canvas = setCanvas;
         playTarg = player;
     }
+
 }

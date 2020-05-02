@@ -51,7 +51,7 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
     private boolean isUpperMenuSelected = false;
     private PlayerStatus player;
     private Canvas canvas = new Canvas();
-    public  List<Enemy> enemies;
+    public  List<Enemy> enemies = new ArrayList<>();
     public List<Projectile> eProjectiles = new ArrayList<>();
     public List<Projectile> pProjectiles = new ArrayList<>();
     // Maybe keep track of a roundOver variable?
@@ -65,6 +65,7 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
     public static int rightBound;
     public static int topBound;
     public static int bottomBound;
+    private int lvl = 0;
 
 
     public GameArena(Context context) {
@@ -91,13 +92,6 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
             player = new PlayerStatus(SavedData.role, playerSprite, canvas);
 
         }
-        levelEnemies n1 = new levelEnemies(0, 1, enemySprite, canvas, player);
-        levelEnemies n2 = new levelEnemies(0, 1, enemySprite, canvas, player);
-        levelEnemies n3 = new levelEnemies(0, 1, enemySprite, canvas, player);
-        levelEnemies n4 = new levelEnemies(0, 1, enemySprite, canvas, player);
-        levelEnemies[] arr = {n1, n2, n3, n4};
-        enemies = WaveGenerator.wave(arr);
-
 
         //Prepares click sound if sound effects are turned on
         click = MediaPlayer.create(gameArenaHolder, R.raw.click);
@@ -182,8 +176,13 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
             //Does not update anything on screen
             return;
         }
+
         if (player.getHitPoints() <= 0) {
             gameOver = false;
+        }
+        if (enemies.size() == 0) {
+            enemies = Levels.level(lvl, enemySprite, canvas, player);
+            lvl++;
         }
         for (Enemy e : enemies) {
             if (e.getHitPoints() <= 0) {
