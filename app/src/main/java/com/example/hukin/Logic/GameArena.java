@@ -187,6 +187,7 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
 
         if (player.getHitPoints() <= 0) {
             gameOver = true;
+            SavedData.isOldGame = false;
         }
         if (gameOver) {
 
@@ -271,8 +272,8 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
 
         if (gameOver) {
             drawGameOverPopout(canvas);
-            drawCenterTextMod(canvas, paint, "Congratulations!" , 0, -250);
-            drawCenterTextMod(canvas, paint, "You made it to level " + lvl + "!" , 0, -100);
+            drawCenterTextMod(canvas, paint, "Game Over!" , 0, -250);
+            drawCenterTextMod(canvas, paint, "You made it to level  " + lvl + "!" , 0, -100);
             //When game is over
         }
         Paint hpBar = new Paint();
@@ -344,7 +345,7 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
         menu.setColor(Color.BLACK);
         menu.setStyle(Paint.Style.STROKE);
         menu.setStrokeWidth(10);
-        canvas.drawRect(screenWidth/2 - 400, screenHeight/2 - 400, screenWidth/2 + 400, screenHeight/2 + 400, menu);
+        canvas.drawRect(screenWidth/2 - 450, screenHeight/2 - 400, screenWidth/2 + 450, screenHeight/2 + 400, menu);
     }
 
     //Draws the white arena with a black border
