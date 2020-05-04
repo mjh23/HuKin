@@ -34,7 +34,6 @@ public class SavedData {
         isOldGame = false;
     }
 
-    public static Movement movePlayer = null;
 
     public static int lvl = 0;
 

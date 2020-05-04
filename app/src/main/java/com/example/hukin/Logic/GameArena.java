@@ -49,6 +49,8 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
 
     //Turns true when the user taps the upper left menu
     private boolean isUpperMenuSelected = false;
+    private boolean newLevel = false;
+    private boolean gameWon = false;
     private PlayerStatus player;
     private Canvas canvas = new Canvas();
     public  List<Enemy> enemies = new ArrayList<>();
@@ -85,14 +87,13 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
             elapsedTime = SavedData.elapsedTime;
             playerSprite = SavedData.player.getSprite();
             player = SavedData.player;
-            player.move = SavedData.movePlayer;
             lvl = SavedData.lvl;
             enemies = SavedData.enemies;
         } else {
             setPlayerSprite();
             enemySprite = new CharacterSprites(BitmapFactory.decodeResource(getResources(), R.drawable.char_dark_armor));
             player = new PlayerStatus(SavedData.role, playerSprite, canvas);
-            lvl = 0;
+            lvl = 1;
         }
 
         //Prepares click sound if sound effects are turned on
@@ -153,15 +154,23 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
                     Toast.makeText(getContext(), "Upper Left Menu was pressed!", Toast.LENGTH_SHORT).show();
                     isUpperMenuSelected = true;
                 }
-                if (!isUpperMenuSelected && ((x > leftBound +32 && x < rightBound - 32) && (y < bottomBound  - 32 && y > topBound - 32))) {
-                    player.move.setTarg(x, y);
+                if (!isUpperMenuSelected && !newLevel && ((x > leftBound +32 && x < rightBound - 32) && (y < bottomBound  - 32 && y > topBound - 32))) {
+                    player.setTarg(x, y);
                     for (Enemy enemy : enemies) {
-                        enemy.move.setTarg(x - 64, y );
+                        enemy.setTarg(x, y );
                     }
                     //Movement.move(player, x - 64, y - 64, canvas, playerSprite);
                 }
+                if (!isUpperMenuSelected && newLevel && ((x> screenWidth/2 -200 && x < screenWidth/2 + 200) && ( y > screenHeight/2 + 150 && y < screenHeight/2 + 250))) {
+                    if (SavedData.soundEffOn) {
+                        clickSound();
+                    }
+                    enemies = Levels.level(lvl, enemySprite, canvas, player);
+                    lvl++;
+                    newLevel = false;
+                }
 
-                if (gameOver) {
+                if ((gameOver || gameWon) && ((x> screenWidth/2 -200 && x < screenWidth/2 + 200) && ( y > screenHeight/2 + 150 && y < screenHeight/2 + 250))) {
                     if (SavedData.soundEffOn) {
                         clickSound();
                     }
@@ -185,33 +194,37 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
             return;
         }
 
+        //Checks if player HP is depleted; if so, activates GameOver
         if (player.getHitPoints() <= 0) {
             gameOver = true;
             SavedData.isOldGame = false;
+            return;
         }
-        if (gameOver) {
-
-        }
+        //Checks to see if all the enemies have been cleared; if so, launches next level.
         if (enemies.size() == 0) {
-            enemies = Levels.level(lvl, enemySprite, canvas, player);
-            lvl++;
+            newLevel = true;
         }
+        //For each enemy, goes through necessary tasks.
         for (Enemy e : enemies) {
+            //Checks if HP is depleted
             if (e.getHitPoints() <= 0) {
-                boolean bool = enemies.remove(e);
+                enemies.remove(e);
             }
-            if (!Aimer.inRange(e, player, e.getRange())) {
-                e.move.move2();
-            } else if (elapsedTime % (e.getDex() * 10) == 0) {
+            //Checks whether the player is in range; if it is, the enemy attacks
+            //If not, the enemy moves towards the player.
+            if (elapsedTime % (e.getDex() * 10) == 0) {
                 Projectile p = new Projectile(e, player);
                 eProjectiles.add(p);
             }
         }
 
+        //Controls the auto-shooting function of the player
         if (elapsedTime % (player.getDex() * 10) == 0 && enemies.size() != 0) {
+            //If the player is the bard, switch to area-damage mode.
+            //Otherwise, create projectiles.
             if (player.getPlayerRole() == 3) {
                 for (Enemy e : enemies) {
-                    Damager.damage(e,player);
+                    Projectile.damage(e,player);
                 }
             } else {
                 Projectile p = new Projectile(player, enemies);
@@ -220,27 +233,29 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
         }
         //Elapsed time incremented here by 1
         elapsedTime++;
-        player.move.move2();
-        Movement.massFire(eProjectiles);
-        if (player.getPlayerRole() != 3) {
-            Movement.massFire(pProjectiles);
-            for ( Projectile k : pProjectiles) {
-                for (Enemy e : enemies) {
-                    if (k.move.hitAvatar(e)) {
-                        Damager.damage(e, k);
-                    }
-                }
-                if (k.move.HitTarget()) {
-                    pProjectiles.remove(k);
-                }
+        //moves player and
+        Moveable.massMove(eProjectiles, pProjectiles, enemies, player);
+
+        for ( Projectile k : eProjectiles) {
+            if (k.hitAvatar(player)) {
+                Projectile.damage(player, k);
+                eProjectiles.remove(k);
+            }
+            if (k.HitTarget()) {
+                eProjectiles.remove(k);
             }
         }
-        for ( Projectile k : eProjectiles) {
-            if (k.move.hitAvatar(player)) {
-                Damager.damage(player, k);
-            }
-            if (k.move.HitTarget()) {
-                eProjectiles.remove(k);
+        if (player.getPlayerRole() != 3) {
+            for ( Projectile k : pProjectiles) {
+                for (Enemy e : enemies) {
+                    if (k.hitAvatar(e)) {
+                        Projectile.damage(e, k);
+                        pProjectiles.remove(k);
+                    }
+                }
+                if (k.HitTarget()) {
+                    pProjectiles.remove(k);
+                }
             }
         }
 
@@ -274,31 +289,66 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
             drawGameOverPopout(canvas);
             drawCenterTextMod(canvas, paint, "Game Over!" , 0, -250);
             drawCenterTextMod(canvas, paint, "You made it to level  " + lvl + "!" , 0, -100);
+            Paint rectPaint = new Paint();
+            rectPaint.setColor(Color.WHITE);
+            canvas.drawRect(screenWidth / 2 - 200, screenHeight / 2 +150, screenWidth / 2 + 200, screenHeight / 2 +250, rectPaint);
+            paint.setTextSize(80);
+            drawCenterTextMod(canvas, paint, "Main menu", 0, +200);
             //When game is over
+        } else {
+            playerSprite.draw(canvas, player.getX() - 64 , player.getY() - 64);
+            for (Enemy d : enemies) {
+                enemySprite.draw(canvas, d.getX() - 64, d.getY() - 64);
+            }
+            for (Projectile x : eProjectiles) {
+                canvas.drawRect(x.getX()-10, x.getY() + 10 , x.getX() + 10 , x.getY()-10, paint);
+            }
+            for (Projectile x : pProjectiles) {
+                canvas.drawRect(x.getX()-10, x.getY() + 10 , x.getX() + 10, x.getY()-10, paint);
+            }
+            Paint hpBar = new Paint();
+            hpBar.setColor(Color.GREEN);
+            if (player.getHitPoints() >= 0) {
+                canvas.drawRect(leftBound, bottomBound + 50, (float) (leftBound + (rightBound)/2 * (player.getHitPoints()/Constants.getHitpoints(player.getPlayerRole()))), bottomBound + 150, hpBar);
+            }
         }
-        Paint hpBar = new Paint();
-        hpBar.setColor(Color.GREEN);
-        canvas.drawRect(leftBound, bottomBound + 50, (float) ((leftBound + rightBound)/2 * (player.getHitPoints()/Constants.getHitpoints(player.getPlayerRole()))), bottomBound + 150, hpBar);
-
-        //Draw all sprites here
-        playerSprite.draw(canvas, player.getX() - 64 , player.getY() - 64);
-        for (Enemy d : enemies) {
-            enemySprite.draw(canvas, d.getX() - 64, d.getY() - 64);
-        }
-        for (Projectile x : eProjectiles) {
-            canvas.drawRect(x.getX()-10 +64, x.getY() + 10 + 64, x.getX() + 10+64 , x.getY()-10 +64, paint);
-        }
-        for (Projectile x : pProjectiles) {
-            canvas.drawRect(x.getX()-10 +64, x.getY() + 10 + 64, x.getX() + 10+64, x.getY()-10 + 64, paint);
-        }
 
 
 
-        //Display Elapsed Time
-        drawCenterTextMod(canvas, paint, "" + elapsedTime + "\n " + SavedData.characterName, 0, (-screenHeight / 2 + 95));
 
         //Draws upper left menu
         drawMenu(canvas);
+        if (newLevel) {
+            drawGameNewLevelPopout(canvas);
+            if (lvl == 1) {
+                drawCenterTextMod(canvas, paint, "Welcome to HuKin" , 0, -250);
+                drawCenterTextMod(canvas, paint, "Ready to start level  " + lvl + "?" , 0, -100);
+                Paint rectPaint = new Paint();
+                rectPaint.setColor(Color.WHITE);
+                canvas.drawRect(screenWidth / 2 - 200, screenHeight / 2 +150, screenWidth / 2 + 200, screenHeight / 2 +250, rectPaint);
+                paint.setTextSize(80);
+                drawCenterTextMod(canvas, paint, "Start", 0, +200);
+            } else if (lvl >1 && lvl < 21) {
+                drawCenterTextMod(canvas, paint, "Congratualations!" , 0, -250);
+                drawCenterTextMod(canvas, paint, "You passed level  " + lvl + "!" , 0, -100);
+                drawCenterTextMod(canvas, paint, "Ready to start level  " + lvl + "?" , 0, 50);
+                Paint rectPaint = new Paint();
+                rectPaint.setColor(Color.WHITE);
+                canvas.drawRect(screenWidth / 2 - 200, screenHeight / 2 +150, screenWidth / 2 + 200, screenHeight / 2 +250, rectPaint);
+                paint.setTextSize(80);
+                drawCenterTextMod(canvas, paint, "Start", 0, +200);
+            } else {
+                drawCenterTextMod(canvas, paint, "Congratulations!" , 0, -250);
+                drawCenterTextMod(canvas, paint, "You won HuKin!!" , 0, -100);
+                Paint rectPaint = new Paint();
+                rectPaint.setColor(Color.WHITE);
+                canvas.drawRect(screenWidth / 2 - 200, screenHeight / 2 +150, screenWidth / 2 + 200, screenHeight / 2 +250, rectPaint);
+                paint.setTextSize(80);
+                drawCenterTextMod(canvas, paint, "Main menu", 0, +200);
+                gameWon = true;
+            }
+
+        }
 
         //When upper menu is pressed, game should look paused and pop up of options should appear
         if (isUpperMenuSelected) {
@@ -348,6 +398,21 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
         canvas.drawRect(screenWidth/2 - 450, screenHeight/2 - 400, screenWidth/2 + 450, screenHeight/2 + 400, menu);
     }
 
+    private void drawGameNewLevelPopout(Canvas canvas) {
+        Paint shade = new Paint();
+        shade.setColor(Color.GRAY);
+        shade.setAlpha(200);
+        canvas.drawRect(0, 0, screenWidth, screenHeight, shade);
+        Paint menu = new Paint();
+        menu.setColor(getResources().getColor(R.color.colorPrimaryDark));
+        menu.setStyle(Paint.Style.FILL);
+        canvas.drawRect(screenWidth/2 - 450, screenHeight/2 - 400, screenWidth/2 + 450, screenHeight/2 + 300, menu);
+        menu.setColor(Color.BLACK);
+        menu.setStyle(Paint.Style.STROKE);
+        menu.setStrokeWidth(10);
+        canvas.drawRect(screenWidth/2 - 450, screenHeight/2 - 400, screenWidth/2 + 450, screenHeight/2 + 300, menu);
+    }
+
     //Draws the white arena with a black border
     private void drawArena(Canvas canvas) {
         Paint arenaColor = new Paint();
@@ -381,7 +446,6 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
         SavedData.isOldGame = true;
         SavedData.elapsedTime = elapsedTime;
         SavedData.player = player;
-        SavedData.movePlayer = player.move;
         SavedData.lvl = lvl;
         SavedData.enemies = enemies;
     }

@@ -23,8 +23,8 @@ public abstract class GameObject {
     public GameObject( final int setX, final int setY,
                       final CharacterSprites setSprite, final Canvas setCanvas) {
         canvas = setCanvas;
-        x = setX + 64;
-        y = setY - 64;
+        x = setX;
+        y = setY;
         sprite = setSprite;
     }
     public GameObject (final int setX, final int setY, final Canvas setCanvas) {

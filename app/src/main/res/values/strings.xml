@@ -7,16 +7,16 @@
     <string name="settings_range">  Range: <b><font color = '#00FF00'>3</font></b> </string>
     <string name="settings_dex">  Dexterity: <b><font color = '#00FF00'>5</font></b> </string>
     <string name="warrior_descrip">
-        The Warrior class is the buff and big ... </string>
+        The Warrior class is the buff and strong. Take lots of damage and mow down your enemies at close range ... </string>
     <string name="ranger_descrip">
-        The Ranger class is the quick and no scoper ... </string>
+        The Ranger class is the quick and no scoper. Avoid your enemies fire and pick them off from a distance ... </string>
     <string name="wizard_descrip">
-        The Wizard class is the wise and social distancer... </string>
+        The Wizard class is the wise and social distancer. Use powerful shots, but mind your delicate constitution... </string>
     <string name="bard_descrip">
-        The Bard class is the dad joke maker ... </string>
+        The Bard class is very annowing and very bad musician. Damage anyone any enemies within your range of attack... </string>
 
     <string name="sound_credits">Royalty free music from https://www.fesliyanstudios.com</string>
     <string name="random_name_credits">Random name generator by names.drycodes.com</string>
-    <string name="tutorial">Tutorial explaination here ... </string>
+    <string name="tutorial">Welcome to HuKin, the arena game. Within this game, your goal is to survive the waves of enemies that come at you for as long as possible. \n\nInstructions:\n \tMovement: Simply tap where you want to go\n \t Attack: Your character will attack the closest enemy for you \n\nJust remember, keep an eye on your healthbar. In the arena, there is  no way to heal ... </string>
 
 </resources>

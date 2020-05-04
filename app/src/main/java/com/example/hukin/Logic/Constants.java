@@ -17,7 +17,7 @@ public class Constants {
     private static double[] speed = {5, 10, 7, 9};
     private static double[] damage = {10, 5, 15, 30};
     private static double[] hitpoints = {250, 150, 125, 150};
-    private static double[] range = {3, 10, 6, 7};
+    private static double[] range = {3, 6, 5, 3};
     private static double[] dex = {5, 5, 5, 5};
 
     public static double getSpeed(int index) {
