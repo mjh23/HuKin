@@ -330,7 +330,7 @@ public class GameArena extends SurfaceView implements SurfaceHolder.Callback {
                 drawCenterTextMod(canvas, paint, "Start", 0, +200);
             } else if (lvl >1 && lvl < 21) {
                 drawCenterTextMod(canvas, paint, "Congratualations!" , 0, -250);
-                drawCenterTextMod(canvas, paint, "You passed level  " + lvl + "!" , 0, -100);
+                drawCenterTextMod(canvas, paint, "You passed level  " + (lvl - 1) + "!" , 0, -100);
                 drawCenterTextMod(canvas, paint, "Ready to start level  " + lvl + "?" , 0, 50);
                 Paint rectPaint = new Paint();
                 rectPaint.setColor(Color.WHITE);
